@@ -2,9 +2,43 @@
 
 🥳 Simple yet powerful node JS library that generates PDF invoice on the fly. 
 
-## Example
+## Installation: 
 
-Simply send a required data to generate the invoice.
+For npm users:
+
+```bash
+npm install @anuj/simple-pdf-invoice
+```
+
+For yarn users:
+
+```bash
+yarn add @anuj/simple-pdf-invoice
+```
+
+For pnpm users:
+
+```bash
+pnpm add @anuj/simple-pdf-invoice
+```
+
+## Use:
+
+Once installed, you can import either using `require` or `import`:
+
+```js
+const { PDFInvoice } = require('@anuj/simple-pdf-invoice');
+```
+
+or
+
+```js
+import { PDFInvoice } from '@anuj/simple-pdf-invoice';
+```
+
+## Payload: 
+
+The payload is the data that you want to show on the invoice. It is an object with the following structure:
 
 ```js
 const payload = {
@@ -49,5 +83,42 @@ const payload = {
 };
 ```
 
-Work in progress...
+Let's understand each of the fields in the payload:
 
+- Company: This is the information about your company. `name` is the required field. All other fields are optional.
+- Customer: This is the information about your customer. `name` is the required field. All other fields are optional.
+- Invoice: This is the information about the invoice. `number` is required field. If `date` & `dueDate` are not provided, then current date will be used. If `status` is not provided, then label `Due` will be used.
+- Items: This is the list of items that you want to show on the invoice. `name`, `quantity` & `price` are required fields.
+- Currency: This is the currency symbol that you want to show on the invoice. Default is `$`.
+- Path: This is the path where you want to save the PDF file. Default is `./invoice.pdf`. Path is **required**.
+
+## Generate PDF:
+
+Once you have the payload ready, you can generate the PDF using the following code:
+
+```js
+const { PDFInvoice } = require('@anuj/simple-pdf-invoice');
+
+const payload = {
+    // Payload goes here
+};
+
+// Instantiate the PDFInvoice class.
+const invoice = new PDFInvoice(payload);
+
+// Create the invoice.
+await invoice.create()
+.then((res)=> { console.log("Invoice created successfully!") })
+.catch((err)=> { console.log(err) });
+```
+
+If PDF is created successfully, then path to the PDF file will be returned.
+
+
+## Credit: 
+
+This library uses [pdfkit](https://pdfkit.org/) under the hood.
+
+## Note: 
+
+This library is still in heavy development stage. This library is not production ready yet. Use it at your own risk.
