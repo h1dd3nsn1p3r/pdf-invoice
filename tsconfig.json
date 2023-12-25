@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"maxNodeModuleJsDepth": 5,
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"strict": true,
+		"target": "ES2022"
+	},
+	"include": ["src"]
+}

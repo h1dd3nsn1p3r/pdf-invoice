@@ -1,12 +1,7 @@
-# Simple PDF Invoice
+const fs = require('fs');
+const path = require('path');
+const { PDFInvoice } = require('../dist/index');
 
-🥳 Simple yet powerful node JS library that generates PDF invoice on the fly. 
-
-## Example
-
-Simply send a required data to generate the invoice.
-
-```js
 const payload = {
     company: {
         name: "Festrol Corp.",
@@ -27,6 +22,7 @@ const payload = {
         dueDate: "25/12/2023",
         status: "Paid!",
     },
+    path: path.join(__dirname, '/invoice.pdf'),
     items: [
         {
             name: "Cloud VPS Server - Starter Plan",
@@ -44,10 +40,14 @@ const payload = {
             price: 300,
         },
     ],
-    currency: "$",
-    path: path.join(__dirname, '/invoice.pdf'),
 };
-```
 
-Work in progress...
-
+const invoice = new PDFInvoice(payload);
+invoice
+    .create()
+    .then((r) => {
+        console.log(r);
+    })
+    .catch((e) => {
+        console.log(e);
+    });
