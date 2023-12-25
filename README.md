@@ -85,12 +85,24 @@ const payload = {
 
 Let's understand each of the fields in the payload:
 
-- Company: This is the information about your company. `name` is the required field. All other fields are optional.
-- Customer: This is the information about your customer. `name` is the required field. All other fields are optional.
-- Invoice: This is the information about the invoice. `number` is required field. If `date` & `dueDate` are not provided, then current date will be used. If `status` is not provided, then label `Due` will be used.
-- Items: This is the list of items that you want to show on the invoice. `name`, `quantity` & `price` are required fields.
-- Currency: This is the currency symbol that you want to show on the invoice. Default is `$`.
-- Path: This is the path where you want to save the PDF file. Default is `./invoice.pdf`. Path is **required**.
+- `Company:` This is the information about your company. `name` is the required field. All other fields are optional.
+
+- `Customer:` This is the information about your customer. `name` is the required field. All other fields are optional.
+
+- `Invoice:` This is the information about the invoice. `number` is required field. If `date` & `dueDate` are not provided, then current date will be used. If `status` is not provided, then label `Due` will be used.
+
+- `Items:` This is the list of items that you want to show on the invoice. `name`, `quantity` & `price` are required fields.
+
+- `Currency:` This is the currency symbol that you want to show on the invoice. Default is `$`.
+
+- `Path:` This is the path where you want to save the PDF file. Path is **required**. If you don't provide the path, then the PDF will not be generated. 
+
+For example: 
+
+```js
+const pdf = path.join(__dirname, '/invoices/invoice.pdf');
+```
+
 
 ## Generate PDF:
 
@@ -99,25 +111,24 @@ Once you have the payload ready, you can generate the PDF using the following co
 ```js
 const { PDFInvoice } = require('@anuj/simple-pdf-invoice');
 
-const payload = {
-    // Payload goes here
-};
+const handleInvoice = async(): Promise<void> => {
+    
+    const payload = {
+        // Prepare payload.
+    };
 
-// Instantiate the PDFInvoice class.
-const invoice = new PDFInvoice(payload);
-
-// Create the invoice.
-await invoice.create()
-.then((res)=> { console.log("Invoice created successfully!") })
-.catch((err)=> { console.log(err) });
+    /**
+    * Create the invoice.
+    */
+    const invoice = new PDFInvoice(payload);
+  
+    await invoice.create()
+    .then((res)=> { console.log("Invoice created here: " + res) })
+    .catch((err)=> { console.log(err) });  
+}
 ```
 
-If PDF is created successfully, then path to the PDF file will be returned.
-
-
-## Credit: 
-
-This library uses [pdfkit](https://pdfkit.org/) under the hood.
+If PDF is created successfully, then the **path to the PDF file** will be returned.
 
 ## Note: 
 
