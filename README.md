@@ -7,19 +7,19 @@
 For npm users:
 
 ```bash
-npm install @anuj/simple-pdf-invoice
+npm install "....."
 ```
 
 For yarn users:
 
 ```bash
-yarn add @anuj/simple-pdf-invoice
+yarn add "....."
 ```
 
 For pnpm users:
 
 ```bash
-pnpm add @anuj/simple-pdf-invoice
+pnpm add "....."
 ```
 
 ## Use:
@@ -27,13 +27,13 @@ pnpm add @anuj/simple-pdf-invoice
 Once installed, you can import either using `require` or `import`:
 
 ```js
-const { PDFInvoice } = require('@anuj/simple-pdf-invoice');
+const { PDFInvoice } = require('....');
 ```
 
 or
 
 ```js
-import { PDFInvoice } from '@anuj/simple-pdf-invoice';
+import { PDFInvoice } from '....';
 ```
 
 ## Payload: 
@@ -109,7 +109,7 @@ const pdf = path.join(__dirname, '/invoices/invoice.pdf');
 Once you have the payload ready, you can generate the PDF using the following code:
 
 ```js
-const { PDFInvoice } = require('@anuj/simple-pdf-invoice');
+const { PDFInvoice } = require('...');
 
 const handleInvoice = async(): Promise<void> => {
     

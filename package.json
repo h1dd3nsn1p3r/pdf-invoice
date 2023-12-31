@@ -3,9 +3,9 @@
 	"version": "1.0.0",
 	"description": "Simple PDF Invoice Generator using NodeJS and PDFKit.",
 	"author": "h1dd3nSn1p3r",
-	"main": "./dist/index.js",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
+	"main": "./build/index.js",
+	"module": "./build/index.mjs",
+	"types": "./build/index.d.ts",
 	"files": [
 		"dist",
 		"package.json"

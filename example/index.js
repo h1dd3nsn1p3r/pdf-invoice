@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { PDFInvoice } = require('../dist/index');
+const { PDFInvoice } = require('../build/index.js');
 
 const payload = {
     company: {
-        name: "Festrol Corp.",
+        name: "Festrols Corp.",
         address: "1711 W. El Segundo Blvd, Hawthorne, Canada - 90250",
         phone: "Tel: (+11) 245 543 903",
         email: "Mail: hello@festrol.io",

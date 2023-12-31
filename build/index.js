@@ -33,6 +33,8 @@ __export(src_exports, {
   PDFInvoice: () => PDFInvoice
 });
 module.exports = __toCommonJS(src_exports);
+
+// src/class/invoice.ts
 var import_fs = __toESM(require("fs"));
 var import_pdfkit = __toESM(require("pdfkit"));
 var PDFInvoice = class {
@@ -166,6 +168,76 @@ var PDFInvoice = class {
    * @since 1.0.0
    */
   renderItems() {
+    if (!this.items || !Array.isArray(this.items)) {
+      throw new Error("Items must be an array. Check doc.");
+    }
+    const tableHeaders = ["Item", "Qty", "Price", "Total"];
+    const table = {
+      headers: tableHeaders,
+      options: {
+        x: 40,
+        y: 300,
+        width: this.maxWidth,
+        columnWidths: [200, 100, 100, 115],
+        headerBackground: "#000000",
+        headerColor: "#FFFFFF",
+        headerRadius: 3
+      }
+    };
+    this.doc.fillColor(table.options.headerColor);
+    this.doc.roundedRect(
+      table.options.x,
+      table.options.y,
+      table.options.width,
+      25,
+      table.options.headerRadius
+    ).fill(table.options.headerBackground);
+    this.doc.font("Helvetica").fontSize(10).fillColor(table.options.headerColor);
+    let startX = table.options.x;
+    table.headers.forEach((label, index) => {
+      this.doc.text(label, startX + 10, table.options.y + 9);
+      startX += table.options.columnWidths[index];
+    });
+    let rowY = table.options.y + 40;
+    let totalCost = 0;
+    this.doc.font("Helvetica");
+    this.doc.fillColor("#333333");
+    this.items.forEach((item) => {
+      const { name, quantity, price } = item;
+      const total = quantity * price;
+      totalCost += total;
+      let startX2 = table.options.x;
+      [name, quantity, price, total].forEach(
+        (label, index) => {
+          this.doc.text(label, startX2 + 10, rowY, {
+            width: table.options.columnWidths[index]
+          });
+          startX2 += table.options.columnWidths[index];
+        }
+      );
+      rowY += 25;
+    });
+    this.renderLine(rowY);
+    rowY += 20;
+    const sectionPosition = this.maxWidth - 115;
+    const tax = 0;
+    const discount = 0;
+    const data = {
+      Subtotal: "$" + totalCost,
+      Tax: "$" + (tax ? tax : "0"),
+      Discount: "$" + (discount ? discount : "0"),
+      Total: "$" + totalCost
+    };
+    Object.keys(data).forEach((key, index) => {
+      this.doc.fillColor("#333333");
+      this.doc.fontSize(10);
+      this.doc.text(key + ": " + data[key], sectionPosition, rowY, {
+        align: "left",
+        width: 200,
+        lineGap: 2
+      });
+      rowY += 25;
+    });
   }
   /**
    * Render <hr> line.
@@ -197,6 +269,7 @@ var PDFInvoice = class {
   async create() {
     this.renderHeader();
     this.renderCustomer();
+    this.renderItems();
     this.doc.end();
     const stream = this.doc.pipe(import_fs.default.createWriteStream(this.path));
     return new Promise((resolve, reject) => {

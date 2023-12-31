@@ -21,14 +21,12 @@ interface Invoice {
 	status: string;
 }
 
-type Path = string;
-
 interface InvoicePayLoad {
 	company: Company;
 	customer: Customer;
 	invoice: Invoice;
 	items: any;
-	path: Path;
+	path: string;
 }
 
 interface SimplePDFInvoice {
@@ -50,7 +48,7 @@ declare class PDFInvoice implements SimplePDFInvoice {
     invoice: Invoice;
     customer: Customer;
     items: any;
-    path: Path;
+    path: string;
     date: string;
     doc: PDFKit.PDFDocument;
     maxWidth: number;
