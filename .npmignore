@@ -1,0 +1,7 @@
+example
+src
+.gitignore
+global.d.ts
+pnpm-lock.yaml
+tsconfig.json
+tsup.config.ts

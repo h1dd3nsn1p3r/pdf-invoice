@@ -1,39 +1,33 @@
 {
 	"name": "simple-pdf-invoice",
 	"version": "1.0.0",
-	"description": "Simple PDF Invoice Generator using NodeJS and PDFKit.",
 	"author": "h1dd3nSn1p3r",
+	"description": "Simple yet powerful node JS library that generates PDF invoice on the fly.",
+	"license": "MIT",
 	"main": "./build/index.js",
 	"module": "./build/index.mjs",
 	"types": "./build/index.d.ts",
-	"files": [
-		"dist",
-		"package.json"
-	],
-	"license": "MIT",
 	"scripts": {
-		"watch": "tsup ./src --watch",
-		"build": "tsup ./src",
-		"start": "node ./example/index.js",
-		"test": "jest"
+		"dev": "tsup ./src --watch",
+		"build": "tsup ./src"
 	},
 	"keywords": [
 		"pdf",
 		"invoice",
+		"estimate",
+		"receipt",
 		"generator",
 		"nodejs",
-		"pdfkit"
+		"pdfmake"
 	],
 	"devDependencies": {
-		"@types/jest": "^29.5.11",
-		"@types/pdfkit": "^0.13.3",
-		"jest": "^29.7.0",
-		"ts-jest": "^29.1.1",
+		"@types/node": "^20.10.5",
+		"@types/pdfmake": "^0.2.8",
 		"ts-node": "^10.9.2",
 		"tsup": "^8.0.1",
 		"typescript": "^5.3.3"
 	},
 	"dependencies": {
-		"pdfkit": "^0.14.0"
+		"pdfmake": "^0.2.8"
 	}
 }

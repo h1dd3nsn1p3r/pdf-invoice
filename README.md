@@ -7,19 +7,19 @@
 For npm users:
 
 ```bash
-npm install "....."
+npm install ....
 ```
 
 For yarn users:
 
 ```bash
-yarn add "....."
+yarn add ....
 ```
 
 For pnpm users:
 
 ```bash
-pnpm add "....."
+pnpm add ....
 ```
 
 ## Use:
@@ -57,29 +57,39 @@ const payload = {
     },
     invoice: {
         number: 1721,
-        date: "25/12/2023",
-        dueDate: "25/12/2023",
+        date: "25/12/2023", // Default is current date.
+        dueDate: "25/12/2023", // Default is current date.
         status: "Paid!",
+        currency: "€", // Default is "$"
     },
     items: [
         {
             name: "Cloud VPS Server - Starter Plan",
             quantity: 1,
             price: 400,
+            tax: 0, // Specify tax in percentage. Default is 0.
         },
         {
             name: "Domain Registration - example.com",
             quantity: 1,
             price: 20,
+            tax: 0, // Specify tax in percentage. Default is 0.
         },
         {
             name: "Maintenance Charge - Yearly",
             quantity: 1,
             price: 300,
+            tax: 0, // Specify tax in percentage. Default is 0.
         },
     ],
-    currency: "$",
-    path: path.join(__dirname, '/invoice.pdf'),
+    qr: {
+        src: "https://www.festrolcorp.io",
+        width: 100, // Default is 50.
+    },
+    note: {
+        text: "Thank you for your business.",
+        italic: false, // Default is true.
+    }
 };
 ```
 
@@ -93,10 +103,6 @@ Let's understand each of the fields in the payload:
 
 - `Items:` This is the list of items that you want to show on the invoice. `name`, `quantity` & `price` are required fields.
 
-- `Currency:` This is the currency symbol that you want to show on the invoice. Default is `$`.
-
-- `Path:` This is the path where you want to save the PDF file. Path is **required**. If you don't provide the path, then the PDF will not be generated. 
-
 For example: 
 
 ```js
@@ -109,7 +115,7 @@ const pdf = path.join(__dirname, '/invoices/invoice.pdf');
 Once you have the payload ready, you can generate the PDF using the following code:
 
 ```js
-const { PDFInvoice } = require('...');
+const { PDFInvoice } = require('....');
 
 const handleInvoice = async(): Promise<void> => {
     
