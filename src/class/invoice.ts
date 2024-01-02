@@ -1,66 +1,17 @@
 const fs = require("fs");
-const pdfmake = require("pdfmake");
-
-interface CompanyInfo {
-	name: string;
-	logo?: {
-		src: string;
-		width?: number;
-	};
-	address?: string;
-	phone?: string;
-	email?: string;
-	website?: string;
-}
-
-interface CustomerInfo {
-	name: string;
-	address?: string;
-	phone?: string;
-	email?: string;
-}
-
-interface InvoiceInfo {
-	label?: string;
-	number: string | number;
-	date: string;
-	dueDate?: string;
-	status: string;
-	currency?: string;
-}
-
-interface ItemInfo {
-	name: string;
-	quantity: number;
-	price: number;
-	tax?: number;
-}
-
-interface QRInfo {
-	src: string;
-	width?: number;
-}
-
-interface Notes {
-	text: string;
-	italic?: boolean;
-}
-
-interface InvoicePayLoad {
-	company: CompanyInfo;
-	customer: CustomerInfo;
-	invoice: InvoiceInfo;
-	items: ItemInfo[];
-	qr: QRInfo;
-	note: Notes;
-}
-
-interface SimplePDFInvoice {
-	create(): void;
-	fonts(): void;
-	meta(): void;
-	render(): void;
-}
+const path = require("path");
+const invoiceMaker = require("pdfmake");
+const helper = require("../utils/helper");
+import type {
+	CompanyInfo,
+	CustomerInfo,
+	InvoiceInfo,
+	ItemInfo,
+	QRInfo,
+	Notes,
+	InvoicePayLoad,
+	SimplePDFInvoice,
+} from "../../global";
 
 export class PDFInvoice implements SimplePDFInvoice {
 	payload: InvoicePayLoad;
@@ -68,19 +19,27 @@ export class PDFInvoice implements SimplePDFInvoice {
 	invoice: InvoiceInfo;
 	customer: CustomerInfo;
 	items: ItemInfo[];
+	currency: string;
+	path: string;
 	qr: QRInfo;
 	note: Notes;
 	date: string;
 	constructor(payload: InvoicePayLoad) {
 		this.payload = payload;
 
-		// Invoice sections.
+		// Invoice content section.
 		this.company = payload.company;
 		this.customer = payload.customer;
 		this.invoice = payload.invoice;
 		this.items = payload.items;
 		this.qr = payload.qr;
 		this.note = payload.note;
+
+		// Invoice currency.
+		this.currency = this.invoice.currency || "$";
+
+		// Path.
+		this.path = path.resolve(this.invoice.path) || "./invoice.pdf";
 
 		// Invoice information.
 		this.date = new Date().toLocaleDateString("en-US", {
@@ -96,69 +55,42 @@ export class PDFInvoice implements SimplePDFInvoice {
 	 * @returns {void}
 	 * @since 1.0.0
 	 */
-	create() {
-		const printer = new pdfmake(this.fonts());
+	async create(): Promise<string> {
+		const printer = new invoiceMaker(this.fonts());
 
 		const docDefinition = {
 			pageSize: "A4",
 			orientation: "portrait",
 			pageMargins: [40, 40, 40, 40],
 			info: this.meta(),
-			content: this.render(),
-			defaultStyle: {
-				fontSize: 10,
-				lineHeight: 1.8,
-				bold: false,
-				font: "Helvetica",
-				color: "#222222",
-				columnGap: 30,
-			},
-			styles: {
-				h1: {
-					fontSize: 18,
-					bold: true,
-				},
-				h2: {
-					fontSize: 16,
-					bold: true,
-				},
-				h3: {
-					fontSize: 14,
-					bold: true,
-				},
-				text: {
-					fontSize: 10,
-					bold: false,
-				},
-				textBold: {
-					fontSize: 10,
-					bold: true,
-				},
-			},
+			content: this.content(),
+			defaultStyle: this.defaultStyle(),
+			styles: this.styles(),
 		};
 
-		const doc = printer.createPdfKitDocument(docDefinition);
+		return new Promise((resolve, reject) => {
+			const doc = printer.createPdfKitDocument(docDefinition);
 
-		doc.pipe(fs.createWriteStream("./invoice.pdf"));
+			doc.pipe(fs.createWriteStream(this.path));
+			doc.end();
 
-		const onSuccess = () => {
-			return "invoice.pdf";
-		};
+			doc.on("end", () => {
+				resolve(this.path);
+			});
 
-		//doc.on("finish", function () {
-		//	return true;
-		//});
-
-		doc.end();
+			doc.on("error", (e: any) => {
+				reject(e);
+			});
+		});
 	}
 
 	/**
-	 * Render company information.
+	 * Fonts.
 	 *
 	 * @returns {Object} font.
 	 * @since 1.0.0
 	 */
-	fonts() {
+	fonts(): any {
 		const fonts = {
 			Helvetica: {
 				normal: "Helvetica",
@@ -172,12 +104,12 @@ export class PDFInvoice implements SimplePDFInvoice {
 	}
 
 	/**
-	 * Render doc meta.
+	 * Doc meta.
 	 *
 	 * @returns {Object} meta.
 	 * @since 1.0.0
 	 */
-	meta() {
+	meta(): any {
 		const meta = {
 			title: "Invoice - #" + this.invoice.number,
 			author: this.company.name,
@@ -189,12 +121,62 @@ export class PDFInvoice implements SimplePDFInvoice {
 	}
 
 	/**
+	 * Default invoice styles.
+	 *
+	 * @returns {Object} defaults.
+	 * @since 1.0.0
+	 */
+	defaultStyle(): any {
+		const defaults = {
+			fontSize: 10,
+			lineHeight: 1.8,
+			bold: false,
+			font: "Helvetica",
+			color: "#222222",
+			columnGap: 30,
+		};
+		return defaults;
+	}
+
+	/**
+	 * Invoice styles.
+	 *
+	 * @returns {Object} defaults.
+	 * @since 1.0.0
+	 */
+	styles(): any {
+		const styles = {
+			h1: {
+				fontSize: 18,
+				bold: true,
+			},
+			h2: {
+				fontSize: 16,
+				bold: true,
+			},
+			h3: {
+				fontSize: 14,
+				bold: true,
+			},
+			text: {
+				fontSize: 10,
+				bold: false,
+			},
+			textBold: {
+				fontSize: 10,
+				bold: true,
+			},
+		};
+		return styles;
+	}
+
+	/**
 	 * Return the invoice layout.
 	 *
 	 * @returns {Object} layout.
 	 * @since 1.0.0
 	 */
-	render() {
+	content(): any {
 		const sections = [];
 
 		/**
@@ -218,22 +200,24 @@ export class PDFInvoice implements SimplePDFInvoice {
 			],
 		};
 
-		//if (this.company.logo) {
-		//	// Check if file exists.
-		//	if (fs.existsSync(this.company.logo.src)) {
-		//		sectionCompany.columns[0].stack.unshift({
-		//			image: this.company.logo.src,
-		//			width: this.company.logo.width || 90,
-		//			alignment: "left",
-		//			margin: [0, 0, 0, 20],
-		//		});
-		//	}
-		//}
+		if (this.company.logo) {
+			if (!this.company.logo.startsWith("<svg")) {
+				throw new Error("Only SVG logo are supported.");
+			}
 
-		if (this.company.name) {
+			sectionCompany.columns[0].stack.unshift({
+				svg: this.company.logo,
+				margin: [0, 0, 0, 20],
+			});
+
+			sectionCompany.columns[0].stack.push({
+				text: this.company.name,
+				style: "h3",
+			});
+		} else {
 			sectionCompany.columns[0].stack.unshift({
 				text: this.company.name,
-				style: this.company.logo ? "h2" : "h1",
+				style: "h1",
 			});
 		}
 
@@ -375,14 +359,14 @@ export class PDFInvoice implements SimplePDFInvoice {
 
 		if (this.items.length > 0) {
 			this.items.forEach((item) => {
+				const totalPrice = helper.calcItemTotal(item);
+
 				sectionItems.table.body.push([
 					`\n ${item.name}`,
 					`\n ${item.quantity}`,
-					`\n ${this.invoice.currency || "$"}${item.price}`,
+					`\n ${this.currency}${item.price}`,
 					`\n ${item.tax || 0}%`,
-					`\n ${this.invoice.currency || "$"}${
-						item.quantity * item.price
-					}`,
+					`\n ${this.currency}${totalPrice}`,
 				]);
 			});
 		}
@@ -407,13 +391,28 @@ export class PDFInvoice implements SimplePDFInvoice {
 					lineHeight: 1.5,
 					style: "textBold",
 					table: {
-						widths: [100, "*"],
+						widths: [80, "*"],
 						headerRows: 1,
 						lineHeight: 1.5,
 						body: [
-							["\n Sub total:", "\n £814"],
-							["\n Total tax:", "\n £0"],
-							["\n Total:", "\n £814"],
+							[
+								"\n Subtotal",
+								`\n ${this.currency}${helper.calcSubTotal(
+									this.items
+								)}`,
+							],
+							[
+								"\n Total Tax",
+								`\n ${this.currency}${helper.calcTax(
+									this.items
+								)}`,
+							],
+							[
+								"\n Total",
+								`\n ${this.currency}${helper.calcFinalTotal(
+									this.items
+								)}`,
+							],
 						],
 					},
 				},
@@ -429,8 +428,8 @@ export class PDFInvoice implements SimplePDFInvoice {
 		 */
 		if (this.payload.qr) {
 			const sectionQR = {
-				margin: [0, 100, 0, 0],
-				qr: this.payload.qr.src,
+				margin: [0, 50, 0, 0],
+				qr: this.payload.qr.data,
 				fit: this.payload.qr.width || "50",
 			};
 
@@ -444,9 +443,9 @@ export class PDFInvoice implements SimplePDFInvoice {
 		 */
 		if (this.payload.note) {
 			const sectionNote = {
-				margin: [0, this.payload.qr ? 20 : 100, 0, 0],
-				text: this.payload.note.text,
-				italics: this.payload.note.italic || true,
+				margin: [0, this.payload.qr ? 20 : 50, 0, 0],
+				text: this.payload.note,
+				italics: true,
 			};
 
 			sections.push(sectionNote);
