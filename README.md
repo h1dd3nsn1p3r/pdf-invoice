@@ -1,25 +1,25 @@
-# Simple PDF Invoice
+![PDF Invoice](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/hero.png)
 
-🥳 Simple yet powerful node JS library that generates PDF invoice on the fly. 
+📑 Simple yet powerful JavaScript library that generates PDF invoice, estimates & payment receipts from a JSON data. It can be used in any Node JS/Bun JS environment. 
 
-## Installation: 
+## Installation
 
-For npm users:
+via npm:
 
 ```bash
-npm install ....
+npm install @h1dd3nsn1p3r/pdf-invoice
 ```
 
-For yarn users:
+via yarn:
 
 ```bash
-yarn add ....
+yarn add @h1dd3nsn1p3r/pdf-invoice
 ```
 
-For pnpm users:
+via pnpm:
 
 ```bash
-pnpm add ....
+pnpm add @h1dd3nsn1p3r/pdf-invoice
 ```
 
 ## Use:
@@ -27,16 +27,18 @@ pnpm add ....
 Once installed, you can import either using `require` or `import`:
 
 ```js
-const { PDFInvoice } = require('....');
+const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 ```
 
-or
+or ES6 import:
 
 ```js
-import { PDFInvoice } from '....';
+import { PDFInvoice } from '@h1dd3nsn1p3r/pdf-invoice';
 ```
 
-## Payload: 
+`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload Data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts) example. 
+
+## Payload Data
 
 The payload is the data that you want to show on the invoice. It is an object with the following structure:
 
@@ -93,20 +95,128 @@ const payload = {
 };
 ```
 
-Let's understand each of the fields in the payload:
-
-- `Company:` This is the information about your company. `name` is the required field. All other fields are optional.
-
-- `Customer:` This is the information about your customer. `name` is the required field. All other fields are optional.
-
-- `Invoice:` This is the information about the invoice. `number` is required field. If `date` & `dueDate` are not provided, then current date will be used. If `status` is not provided, then label `Due` will be used.
-
-- `Items:` This is the list of items that you want to show on the invoice. `name`, `quantity` & `price` are required fields.
-
-For example: 
+**Note:** If the string is long, then you can use `\n` to break the line. For example:
 
 ```js
-const pdf = path.join(__dirname, '/invoices/invoice.pdf');
+const payload = {
+    company: {
+        name: "Festrol Corp.",
+        address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250",
+        phone: "Tel: (+11) 245 543 903",
+        email: "Mail: email@yourcompany.com"
+    },
+};
+```
+
+Let's understand each of the fields in the payload.
+
+### Company
+
+This is the information about your company. It is an object with the following structure:
+
+```js
+const company = {
+    logo: "<svg>...</svg>", // Optional. SVG logo of your company.
+    name: "Festrol Corp.", // Required.
+    address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250", // Optional.
+    phone: "Tel: (+11) 245 543 903", // Optional.
+    email: "hello@company.com", // Optional.
+    website: "Web: https://www.festrolcorp.io" // Optional.
+}
+```
+
+For now, only **SVG logo** can be used. The name of the company is required. Rest of the fields are optional.
+
+### Invoice
+
+This is the information about the invoice. It is an object with the following structure:
+
+```js
+const invoice = {
+    number: 1721, // Required.
+    date: "25/12/2023", // Optional. Default is current date.
+    dueDate: "25/12/2023", // Optional. Default is current date.
+    status: "Paid!", // Optional. Default is "Due pending!".
+    currency: "€", // Optional. Default is "$".
+}
+```
+
+The invoice number is required. It might be a `integer` that you use to track your invoices. In most cases, it is a unique number that reference the `order ID` or invoice sequence number in your database. Rest of the fields are optional.
+
+### Customer
+
+This is the information about your customer. It is an object with the following structure:
+
+```js
+const customer = {
+    name: "John Doe", // Required.
+    address: "1234 Main Street, New York, \n NY 10001", // Optional.
+    phone: "Tel: (555) 555-5555", // Optional.
+    email: "joedeo@example.com", // Optional.
+}
+```
+
+The name of the customer is required. Rest of the fields are optional.
+
+### Items
+
+Items are the products or services that you are selling. It is an `array` of objects with the following structure:
+
+```js
+const items = [
+    {
+        name: "Cloud VPS Server - Starter Plan", // Required.
+        quantity: 1, // Required.
+        price: 400, // Required.
+        tax: 0, // Optional. Specify tax in percentage. Default is 0.
+    },
+    {
+        name: "Domain Registration - example.com", // Required.
+        quantity: 1, // Required.
+        price: 20, // Required.
+        tax: 0, // Optional. Specify tax in percentage. Default is 0.
+    },
+    {
+        name: "Maintenance Charge - Yearly", // Required.
+        quantity: 1, // Required.
+        price: 300, // Required.
+        tax: 0, // Optional. Specify tax in percentage. Default is 0.
+    },
+];
+```
+
+The `name`, `quantity` and `price` of the item is required. Rest of the fields are optional. Although if you have single item in the invoice, you need to pass it as an object. For example:
+
+```js
+const items = [
+    {
+        name: "Cloud VPS Server - Starter Plan", // Required.
+        quantity: 1, // Required.
+        price: 400, // Required.
+        tax: 0, // Optional. Specify tax in percentage. Default is 0.
+    },
+];
+```
+
+### QR:
+
+If you want to add a QR code to the invoice, then you can use this field. It is an object with the following structure:
+
+```js
+const qr = {
+    data: "https://www.festrolcorp.io/", // Required. The data that you want to encode in the QR code.
+    width: 100, // Optional. Default is 50. 
+}
+```
+
+The `data` field is required. It is the data that you want to encode in the QR code. The `width` field is optional. It is the width of the QR code in pixels. Default is `50`. The recommended width of QR is 30 - 100.
+
+### Note:
+
+Use this field if you want to add a note to the invoice. It is an string with the following structure:
+
+```js
+const note = "Thank you for your business."; 
 ```
 
 
@@ -115,7 +225,7 @@ const pdf = path.join(__dirname, '/invoices/invoice.pdf');
 Once you have the payload ready, you can generate the PDF using the following code:
 
 ```js
-const { PDFInvoice } = require('....');
+const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 
 const handleInvoice = async(): Promise<void> => {
     
@@ -127,15 +237,20 @@ const handleInvoice = async(): Promise<void> => {
     * Create the invoice.
     */
     const invoice = new PDFInvoice(payload);
-  
-    await invoice.create()
-    .then((res)=> { console.log("Invoice created here: " + res) })
-    .catch((err)=> { console.log(err) });  
+    const pdf = await invoice.create(); // Returns promise, await it.
+
+    console.log(pdf); // Path to the PDF file. 
 }
+
+handleInvoice();
 ```
 
-If PDF is created successfully, then the **path to the PDF file** will be returned.
+Once you call the `create` method, it will return a promise. You can either use `async/await` or `.then()` to handle the promise. The `create` method will return the path to the PDF file if the PDF is generated successfully. Otherwise, it will throw an error.
 
-## Note: 
 
-This library is still in heavy development stage. This library is not production ready yet. Use it at your own risk.
+## Todo: 
+
+- [ ] Add design/style options.
+- [ ] Add configuration options.
+- [ ] Add support for multi-language.
+- [ ] Better error handling.
