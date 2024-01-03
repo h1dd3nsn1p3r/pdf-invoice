@@ -22,7 +22,7 @@ via pnpm:
 pnpm add @h1dd3nsn1p3r/pdf-invoice
 ```
 
-## Use:
+## Use
 
 Once installed, you can import either using `require` or `import`:
 
@@ -198,7 +198,7 @@ const items = [
 ];
 ```
 
-### QR:
+### QR Code
 
 If you want to add a QR code to the invoice, then you can use this field. It is an object with the following structure:
 
@@ -211,7 +211,7 @@ const qr = {
 
 The `data` field is required. It is the data that you want to encode in the QR code. The `width` field is optional. It is the width of the QR code in pixels. Default is `50`. The recommended width of QR is 30 - 100.
 
-### Note:
+### Note
 
 Use this field if you want to add a note to the invoice. It is an string with the following structure:
 
@@ -220,7 +220,7 @@ const note = "Thank you for your business.";
 ```
 
 
-## Generate PDF:
+## Generate PDF
 
 Once you have the payload ready, you can generate the PDF using the following code:
 
@@ -248,7 +248,7 @@ handleInvoice();
 Once you call the `create` method, it will return a promise. You can either use `async/await` or `.then()` to handle the promise. The `create` method will return the path to the PDF file if the PDF is generated successfully. Otherwise, it will throw an error.
 
 
-## Todo: 
+## Todo
 
 - [ ] Add design/style options.
 - [ ] Add configuration options.
