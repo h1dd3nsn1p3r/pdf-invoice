@@ -1,5 +1,9 @@
 # Changelogs
 
+## 1.0.3 - 04 January 2024
+
+- Fix: `dist` DIR path in `package.json` file.
+
 ## 1.0.2 - 03 January 2024
 
 - Added: Github workflow for npm package publish.
