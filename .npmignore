@@ -1,5 +1,6 @@
 examples
 src
+.github
 .gitignore
 global.d.ts
 pnpm-lock.yaml

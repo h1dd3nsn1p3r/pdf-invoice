@@ -45,6 +45,7 @@ The payload is the data that you want to show on the invoice. It is an object wi
 ```js
 const payload = {
     company: {
+        logo: "<svg>...</svg>", // Optional. SVG logo of your company.
         name: "Festrol Corp.",
         address: "1711 W. El Segundo Blvd, Hawthorne, Canada - 90250",
         phone: "Tel: (+11) 245 543 903",
