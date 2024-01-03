@@ -1,7 +1,7 @@
 {
 	"name": "@h1dd3nsn1p3r/pdf-invoice",
-	"version": "1.0.1",
-	"author": "h1dd3nSn1p3r",
+	"version": "1.0.2",
+	"author": "h1dd3nsn1p3r",
 	"description": "Simple yet powerful node JS library that generates PDF invoice on the fly.",
 	"license": "MIT",
 	"main": "./build/index.js",
@@ -11,6 +11,11 @@
 		"dev": "tsup ./src --watch",
 		"build": "tsup ./src"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:h1dd3nsn1p3r/pdf-invoice.git"
+	},
+	"homepage": "https://h1dd3nsn1p3r/pdf-invoice",
 	"keywords": [
 		"pdf",
 		"invoice",
