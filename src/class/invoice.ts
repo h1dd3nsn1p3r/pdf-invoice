@@ -72,6 +72,7 @@ export class PDFInvoice implements SimplePDFInvoice {
 			const doc = printer.createPdfKitDocument(docDefinition);
 
 			doc.pipe(fs.createWriteStream(this.path));
+
 			doc.end();
 
 			doc.on("end", () => {

@@ -36,7 +36,7 @@ or ES6 import:
 import { PDFInvoice } from '@h1dd3nsn1p3r/pdf-invoice';
 ```
 
-`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload Data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts) example. 
+`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts) example. 
 
 ## Payload Data
 
@@ -63,7 +63,8 @@ const payload = {
         date: "25/12/2023", // Default is current date.
         dueDate: "25/12/2023", // Default is current date.
         status: "Paid!",
-        currency: "€", // Default is "$"
+        currency: "€", // Default is "$",
+        path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file. 
     },
     items: [
         {
@@ -86,7 +87,7 @@ const payload = {
         },
     ],
     qr: {
-        src: "https://www.festrolcorp.io",
+        data: "https://www.festrolcorp.io",
         width: 100, // Default is 50.
     },
     note: {
@@ -143,6 +144,18 @@ const invoice = {
 ```
 
 The invoice number is required. It might be a `integer` that you use to track your invoices. In most cases, it is a unique number that reference the `order ID` or invoice sequence number in your database. Rest of the fields are optional.
+
+If path is supplied in the payload, then the PDF will be generated at that location. For example:
+
+```js
+const file = "invoice" + "-#" + 1729 + "-" + new Date().getTime(); // invoice-#1729-1630480000000
+const location = path.join(__dirname, "/invoices/" + file + ".pdf"); 
+const invoice = {
+    path: location, // Required.
+}
+```
+
+If path is not supplied in the payload, then the PDF will be generated in current working directory with the name `invoice.pdf`. 
 
 ### Customer
 
@@ -240,7 +253,7 @@ const handleInvoice = async(): Promise<void> => {
     const invoice = new PDFInvoice(payload);
     const pdf = await invoice.create(); // Returns promise, await it.
 
-    console.log(pdf); // Path to the PDF file. 
+    console.log(pdf); // Full path to the PDF file.
 }
 
 handleInvoice();
@@ -248,6 +261,13 @@ handleInvoice();
 
 Once you call the `create` method, it will return a promise. You can either use `async/await` or `.then()` to handle the promise. The `create` method will return the path to the PDF file if the PDF is generated successfully. Otherwise, it will throw an error.
 
+## Types
+
+This library is written in TypeScript. If you need to import the types, then you can import them from `global.d.ts` file. For example:
+
+```js
+import type { CompanyInfo, CustomerInfo, InvoiceInfo, ItemInfo, QRInfo, InvoicePayLoad } from '@h1dd3nsn1p3r/pdf-invoice/global.d.ts';
+```
 
 ## Todo
 
