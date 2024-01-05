@@ -36,7 +36,7 @@ or ES6 import:
 import { PDFInvoice } from '@h1dd3nsn1p3r/pdf-invoice';
 ```
 
-`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts) example. 
+`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/stable/examples/example.ts) example. 
 
 ## Payload Data
 
@@ -50,16 +50,19 @@ const payload = {
         address: "1711 W. El Segundo Blvd, Hawthorne, Canada - 90250",
         phone: "Tel: (+11) 245 543 903",
         email: "Mail: hello@festrol.io",
-        website: "Web: https://www.festrolcorp.io"
+        website: "Web: https://www.festrolcorp.io",
+        taxId: "Tax ID: 1234567890", // Optional.
     },
     customer: {
         name: "John Doe",
+        company: "Xero Inc.", // Optional.
         address: "1234 Main Street, New York, NY 10001",
         phone: "Tel: (555) 555-5555",
         email: "Mail: joe@example.com",
+        taxId: "Tax ID: 1234567890", // Optional.
     },
     invoice: {
-        number: 1721,
+        number: 1721, // String or number.
         date: "25/12/2023", // Default is current date.
         dueDate: "25/12/2023", // Default is current date.
         status: "Paid!",
@@ -124,6 +127,7 @@ const company = {
     phone: "Tel: (+11) 245 543 903", // Optional.
     email: "hello@company.com", // Optional.
     website: "Web: https://www.festrolcorp.io" // Optional.
+    taxId: "Tax ID: 1234567890", // Optional.
 }
 ```
 
@@ -164,9 +168,11 @@ This is the information about your customer. It is an object with the following 
 ```js
 const customer = {
     name: "John Doe", // Required.
+    company: "Xero Inc.", // Optional.
     address: "1234 Main Street, New York, \n NY 10001", // Optional.
     phone: "Tel: (555) 555-5555", // Optional.
     email: "joedeo@example.com", // Optional.
+    taxId: "Tax ID: 1234567890", // Optional.
 }
 ```
 
@@ -219,7 +225,7 @@ If you want to add a QR code to the invoice, then you can use this field. It is 
 ```js
 const qr = {
     data: "https://www.festrolcorp.io/", // Required. The data that you want to encode in the QR code.
-    width: 100, // Optional. Default is 50. 
+    width: "100", // Optional. Default is 50. 
 }
 ```
 
@@ -232,7 +238,6 @@ Use this field if you want to add a note to the invoice. It is an string with th
 ```js
 const note = "Thank you for your business."; 
 ```
-
 
 ## Generate PDF
 
@@ -263,11 +268,17 @@ Once you call the `create` method, it will return a promise. You can either use 
 
 ## Types
 
-This library is written in TypeScript. If you need to import the types, then you can import them from `global.d.ts` file. For example:
+This library is written in TypeScript. If you need to import the types, then you can import them from `global.d.ts` file. Refer to [Global types](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/stable/global.d.ts) file for more information.
+
+Import example:
 
 ```js
 import type { CompanyInfo, CustomerInfo, InvoiceInfo, ItemInfo, QRInfo, InvoicePayLoad } from '@h1dd3nsn1p3r/pdf-invoice/global.d.ts';
 ```
+
+## Changelog: 
+
+Refer to [releases](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases) section for more information.
 
 ## Todo
 

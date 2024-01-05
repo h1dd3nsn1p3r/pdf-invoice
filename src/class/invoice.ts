@@ -250,6 +250,13 @@ export class PDFInvoice implements SimplePDFInvoice {
 			});
 		}
 
+		if (this.company.taxId) {
+			sectionCompany.columns[0].stack.push({
+				text: this.company.taxId,
+				style: "text",
+			});
+		}
+
 		// Invoice information.
 		if (this.invoice.label) {
 			sectionCompany.columns[1].stack.unshift({
@@ -263,33 +270,25 @@ export class PDFInvoice implements SimplePDFInvoice {
 			});
 		}
 
-		if (this.invoice.number) {
-			sectionCompany.columns[1].stack.push({
-				text: `Ref no: #${this.invoice.number || 1}`,
-				style: "textBold",
-			});
-		}
+		sectionCompany.columns[1].stack.push({
+			text: `Ref no: #${this.invoice.number || 1}`,
+			style: "textBold",
+		});
 
-		if (this.invoice.date) {
-			sectionCompany.columns[1].stack.push({
-				text: `Date: ${this.invoice.date || this.date}`,
-				style: "text",
-			});
-		}
+		sectionCompany.columns[1].stack.push({
+			text: `Date: ${this.invoice.date || this.date}`,
+			style: "text",
+		});
 
-		if (this.invoice.dueDate) {
-			sectionCompany.columns[1].stack.push({
-				text: `Due Date: ${this.invoice.dueDate || this.date}`,
-				style: "text",
-			});
-		}
+		sectionCompany.columns[1].stack.push({
+			text: `Due Date: ${this.invoice.dueDate || this.date}`,
+			style: "text",
+		});
 
-		if (this.invoice.status) {
-			sectionCompany.columns[1].stack.push({
-				text: `Status: ${this.invoice.status || "Due to pay!"}`,
-				style: "textBold",
-			});
-		}
+		sectionCompany.columns[1].stack.push({
+			text: `Status: ${this.invoice.status || "Due to pay!"}`,
+			style: "textBold",
+		});
 
 		sections.push(sectionCompany);
 
@@ -316,6 +315,13 @@ export class PDFInvoice implements SimplePDFInvoice {
 			});
 		}
 
+		if (this.customer.company) {
+			sectionCustomer.columns[0].stack.push({
+				text: this.customer.company,
+				style: "text",
+			});
+		}
+
 		if (this.customer.address) {
 			sectionCustomer.columns[0].stack.push({
 				text: this.customer.address,
@@ -333,6 +339,13 @@ export class PDFInvoice implements SimplePDFInvoice {
 		if (this.customer.email) {
 			sectionCustomer.columns[0].stack.push({
 				text: this.customer.email,
+				style: "text",
+			});
+		}
+
+		if (this.customer.taxId) {
+			sectionCustomer.columns[0].stack.push({
+				text: this.customer.taxId,
 				style: "text",
 			});
 		}

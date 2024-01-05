@@ -5,13 +5,16 @@ export interface CompanyInfo {
 	phone?: string;
 	email?: string;
 	website?: string;
+	taxId?: string;
 }
 
 export interface CustomerInfo {
 	name: string;
+	company?: string;
 	address?: string;
 	phone?: string;
 	email?: string;
+	taxId?: string;
 }
 
 export interface InvoiceInfo {
@@ -33,7 +36,7 @@ export interface ItemInfo {
 
 export interface QRInfo {
 	data: string;
-	width?: number;
+	width?: number | string;
 }
 
 export type Notes = string;
