@@ -5,13 +5,16 @@ interface CompanyInfo {
 	phone?: string;
 	email?: string;
 	website?: string;
+	taxId?: string;
 }
 
 interface CustomerInfo {
 	name: string;
+	company?: string;
 	address?: string;
 	phone?: string;
 	email?: string;
+	taxId?: string;
 }
 
 interface InvoiceInfo {
@@ -33,7 +36,7 @@ interface ItemInfo {
 
 interface QRInfo {
 	data: string;
-	width?: number;
+	width?: number | string;
 }
 
 type Notes = string;

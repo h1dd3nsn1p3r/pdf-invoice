@@ -1,6 +1,6 @@
 {
 	"name": "@h1dd3nsn1p3r/pdf-invoice",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"author": "h1dd3nsn1p3r",
 	"description": "Simple yet powerful node JS library that generates PDF invoice on the fly.",
 	"license": "MIT",
@@ -9,7 +9,8 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"dev": "tsup ./src --watch",
-		"build": "tsup ./src"
+		"build": "tsup ./src",
+		"test": "node ./examples/example.ts"
 	},
 	"repository": {
 		"type": "git",
