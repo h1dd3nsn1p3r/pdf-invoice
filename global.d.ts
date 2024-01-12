@@ -1,6 +1,6 @@
 export interface CompanyInfo {
 	logo?: string;
-	name: string;
+	name?: string;
 	address?: string;
 	phone?: string;
 	email?: string;
