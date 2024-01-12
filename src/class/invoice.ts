@@ -70,18 +70,19 @@ export class PDFInvoice implements SimplePDFInvoice {
 
 		return new Promise((resolve, reject) => {
 			const doc = printer.createPdfKitDocument(docDefinition);
+			const stream = fs.createWriteStream(this.path);
 
-			doc.pipe(fs.createWriteStream(this.path));
-
-			doc.end();
+			doc.pipe(stream);
 
 			doc.on("end", () => {
 				resolve(this.path);
 			});
 
-			doc.on("error", (e: any) => {
-				reject(e);
+			doc.on("error", (err: any) => {
+				reject(err);
 			});
+
+			doc.end();
 		});
 	}
 
