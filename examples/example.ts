@@ -22,7 +22,7 @@ const payload = {
 		dueDate: "25/12/2023",
 		status: "Paid!",
 		currency: "£",
-		path: "./invoice.pdf", // path needs to be relative to current working directory.
+		path: path.join(__dirname, "invoice.pdf"),
 	},
 	items: [
 		{
@@ -55,10 +55,13 @@ const payload = {
  * Generate PDF invoice.
  */
 const createPDF = async () => {
-	const invoice = new PDFInvoice(payload);
-	const pdf = await invoice.create();
-
-	console.log(pdf);
+	try {
+		const invoice = new PDFInvoice(payload);
+		const result = await invoice.create();
+		console.log("✨ [Success] Invoice created : " + result + "\n");
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 createPDF();

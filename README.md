@@ -122,7 +122,7 @@ This is the information about your company. It is an object with the following s
 ```js
 const company = {
     logo: "<svg>...</svg>", // Optional. SVG logo of your company.
-    name: "Festrol Corp.", // Required.
+    name: "Festrol Corp.", // Optional or required if logo is not supplied.
     address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250", // Optional.
     phone: "Tel: (+11) 245 543 903", // Optional.
     email: "hello@company.com", // Optional.
@@ -131,7 +131,9 @@ const company = {
 }
 ```
 
-For now, only **SVG logo** can be used. The name of the company is required. Rest of the fields are optional.
+For now, only **svg logo** can be used. If you wish to use logo & do not want the company name, then do not pass the `name` field. Rest of the fields are optional.
+
+```js
 
 ### Invoice
 
@@ -285,4 +287,3 @@ Refer to [releases](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases) sectio
 - [ ] Add design/style options.
 - [ ] Add configuration options.
 - [ ] Add support for multi-language.
-- [ ] Better error handling.
