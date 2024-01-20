@@ -281,31 +281,31 @@ export class PDFInvoice implements SimplePDFInvoice {
 			});
 		}
 
-		const refLabel = this.config.string.refNumber || "Ref no: #";
+		const refLabel = this.config.string.refNumber || "Ref no:";
 
 		sectionCompany.columns[1].stack.push({
-			text: refLabel + (this.invoice.number || 1),
+			text: refLabel + ": #" + (this.invoice.number || 1),
 			style: "textBold",
 		});
 
 		const dateLabel = this.config.string.date;
 
 		sectionCompany.columns[1].stack.push({
-			text: dateLabel + " " + (this.invoice.date || this.date),
+			text: dateLabel + ": " + (this.invoice.date || this.date),
 			style: "text",
 		});
 
 		const dueDateLabel = this.config.string.dueDate;
 
 		sectionCompany.columns[1].stack.push({
-			text: dueDateLabel + " " + (this.invoice.dueDate || this.date),
+			text: dueDateLabel + ": " + (this.invoice.dueDate || this.date),
 			style: "text",
 		});
 
 		const statusLabel = this.config.string.status;
 
 		sectionCompany.columns[1].stack.push({
-			text: statusLabel + " " + (this.invoice.status || "Pending!"),
+			text: statusLabel + ": " + (this.invoice.status || "Pending!"),
 			style: "textBold",
 		});
 

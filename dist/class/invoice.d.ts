@@ -60,21 +60,35 @@ interface SimplePDFInvoice {
 }
 
 interface Configuration {
-	label: {
-		invoice: string;
-		refNumber: string;
-		date: string;
-		dueDate: string;
-		status: string;
-		billTo: string;
-		item: string;
-		quantity: string;
-		price: string;
-		tax: string;
-		total: string;
-		subTotal: string;
-		totalTax: string;
+	string: {
+		invoice?: string;
+		refNumber?: string;
+		date?: string;
+		dueDate?: string;
+		status?: string;
+		billTo?: string;
+		item?: string;
+		quantity?: string;
+		price?: string;
+		tax?: string;
+		total?: string;
+		subTotal?: string;
+		totalTax?: string;
 	};
+	font: [
+		helvetica?: {
+			normal?: string;
+			bold?: string;
+			italics?: string;
+			bolditalics?: string;
+		},
+		noto?: {
+			normal?: string;
+			bold?: string;
+			italics?: string;
+			bolditalics?: string;
+		}
+	];
 }
 
 declare class PDFInvoice implements SimplePDFInvoice {

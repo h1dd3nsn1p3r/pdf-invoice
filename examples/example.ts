@@ -58,9 +58,9 @@ const payload = {
 	Optional: Config
   -------------------------------------------------------------------------- */
 const config = {
-	label: {
+	string: {
 		invoice: "F A C T U A",
-		refNumber: "Referencia #",
+		refNumber: "Referencia",
 		date: "Fecha",
 		dueDate: "Fecha de vencimiento",
 		status: "Estado",
