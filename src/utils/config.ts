@@ -7,10 +7,10 @@
 const defaultConfig = {
 	string: {
 		invoice: "I N V O I C E",
-		refNumber: "Ref no: #",
-		date: "Date:",
-		dueDate: "Due Date:",
-		status: "Status:",
+		refNumber: "Ref no",
+		date: "Date",
+		dueDate: "Due Date",
+		status: "Status",
 		billTo: "Bill To",
 		item: "Item",
 		quantity: "Qty",
