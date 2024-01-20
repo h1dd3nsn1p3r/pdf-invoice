@@ -27,9 +27,6 @@ const defaultConfig = {
 			italics: "Helvetica-Oblique",
 			bolditalics: "Helvetica-BoldOblique",
 		},
-		//noto: {
-
-		//}
 	},
 };
 
