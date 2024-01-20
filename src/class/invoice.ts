@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const invoiceMaker = require("pdfmake");
 const helper = require("../utils/helper");
+const defaultConfig = require("../utils/config");
+
 import type {
 	CompanyInfo,
 	CustomerInfo,
@@ -11,6 +13,7 @@ import type {
 	Notes,
 	InvoicePayLoad,
 	SimplePDFInvoice,
+	Configuration,
 } from "../../global";
 
 export class PDFInvoice implements SimplePDFInvoice {
@@ -24,7 +27,11 @@ export class PDFInvoice implements SimplePDFInvoice {
 	qr: QRInfo;
 	note: Notes;
 	date: string;
-	constructor(payload: InvoicePayLoad) {
+	config: Configuration;
+	constructor(
+		payload: InvoicePayLoad,
+		config: Configuration = defaultConfig
+	) {
 		this.payload = payload;
 
 		// Invoice content section.
@@ -47,6 +54,9 @@ export class PDFInvoice implements SimplePDFInvoice {
 			month: "numeric",
 			day: "numeric",
 		});
+
+		// Configuration.
+		this.config = config;
 	}
 
 	/**
@@ -266,28 +276,36 @@ export class PDFInvoice implements SimplePDFInvoice {
 			});
 		} else {
 			sectionCompany.columns[1].stack.unshift({
-				text: "I N V O I C E",
+				text: this.config.string.invoice || "I N V O I C E",
 				style: "h1",
 			});
 		}
 
+		const refLabel = this.config.string.refNumber || "Ref no: #";
+
 		sectionCompany.columns[1].stack.push({
-			text: `Ref no: #${this.invoice.number || 1}`,
+			text: refLabel + (this.invoice.number || 1),
 			style: "textBold",
 		});
 
+		const dateLabel = this.config.string.date;
+
 		sectionCompany.columns[1].stack.push({
-			text: `Date: ${this.invoice.date || this.date}`,
+			text: dateLabel + " " + (this.invoice.date || this.date),
 			style: "text",
 		});
 
+		const dueDateLabel = this.config.string.dueDate;
+
 		sectionCompany.columns[1].stack.push({
-			text: `Due Date: ${this.invoice.dueDate || this.date}`,
+			text: dueDateLabel + " " + (this.invoice.dueDate || this.date),
 			style: "text",
 		});
 
+		const statusLabel = this.config.string.status;
+
 		sectionCompany.columns[1].stack.push({
-			text: `Status: ${this.invoice.status || "Due to pay!"}`,
+			text: statusLabel + " " + (this.invoice.status || "Pending!"),
 			style: "textBold",
 		});
 
@@ -303,7 +321,12 @@ export class PDFInvoice implements SimplePDFInvoice {
 				{
 					width: 300,
 					margin: [0, 30, 0, 0],
-					stack: [{ text: "Bill To:", style: "h2" }] as any,
+					stack: [
+						{
+							text: this.config.string.billTo,
+							style: "h2",
+						},
+					] as any,
 					style: "text",
 				},
 			],
@@ -360,14 +383,19 @@ export class PDFInvoice implements SimplePDFInvoice {
 		 */
 		const sectionItems = {
 			margin: [0, 30, 0, 0],
-			//layout: "lightHorizontalLines",
 			lineHeight: 1.5,
 			table: {
 				widths: [200, 50, "*", 50, "*"],
 				headerRows: 1,
 				lineHeight: 1.5,
 				body: [
-					["\n Item", "\n Qty", "\n Price", "\n TAX", "\n Total"],
+					[
+						`\n ${this.config.string.item}`,
+						`\n ${this.config.string.quantity}`,
+						`\n ${this.config.string.price}`,
+						`\n ${this.config.string.tax}`,
+						`\n ${this.config.string.total}`,
+					],
 				] as any,
 			},
 		};
@@ -411,19 +439,19 @@ export class PDFInvoice implements SimplePDFInvoice {
 						lineHeight: 1.5,
 						body: [
 							[
-								"\n Subtotal",
+								`\n ${this.config.string.subTotal}`,
 								`\n ${this.currency}${helper.calcSubTotal(
 									this.items
 								)}`,
 							],
 							[
-								"\n Total Tax",
+								`\n ${this.config.string.totalTax}`,
 								`\n ${this.currency}${helper.calcTax(
 									this.items
 								)}`,
 							],
 							[
-								"\n Total",
+								`\n ${this.config.string.total}`,
 								`\n ${this.currency}${helper.calcFinalTotal(
 									this.items
 								)}`,

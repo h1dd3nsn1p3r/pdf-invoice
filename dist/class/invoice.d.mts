@@ -1,6 +1,6 @@
 interface CompanyInfo {
 	logo?: string;
-	name: string;
+	name?: string;
 	address?: string;
 	phone?: string;
 	email?: string;
@@ -59,6 +59,24 @@ interface SimplePDFInvoice {
 	styles(): any;
 }
 
+interface Configuration {
+	label: {
+		invoice: string;
+		refNumber: string;
+		date: string;
+		dueDate: string;
+		status: string;
+		billTo: string;
+		item: string;
+		quantity: string;
+		price: string;
+		tax: string;
+		total: string;
+		subTotal: string;
+		totalTax: string;
+	};
+}
+
 declare class PDFInvoice implements SimplePDFInvoice {
     payload: InvoicePayLoad;
     company: CompanyInfo;
@@ -70,7 +88,8 @@ declare class PDFInvoice implements SimplePDFInvoice {
     qr: QRInfo;
     note: Notes;
     date: string;
-    constructor(payload: InvoicePayLoad);
+    config: Configuration;
+    constructor(payload: InvoicePayLoad, config?: Configuration);
     /**
      * Create a PDF invoice.
      *
