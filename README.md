@@ -268,6 +268,50 @@ handleInvoice();
 
 Once you call the `create` method, it will return a promise. You can either use `async/await` or `.then()` to handle the promise. The `create` method will return the path to the PDF file if the PDF is generated successfully. Otherwise, it will throw an error.
 
+## Configuration
+
+If required you can change the configuration of the invoice. It is an object with the following structure:
+
+```js
+const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
+
+const create = async(): Promise<void> => {
+    
+    const payload = {
+        // ....
+    };
+
+    const config = {
+        // Custom labels.
+        string: {
+            invoice: "F A C T U A",
+            refNumber: "Referencia",
+            date: "Fecha",
+            dueDate: "Fecha de vencimiento",
+            status: "Estado",
+            billTo: "Facturar a",
+            item: "Artículo",
+            quantity: "Cantidad",
+            price: "Precio",
+            tax: "Impuesto",
+            total: "Total",
+            subTotal: "Subtotal",
+            totalTax: "Total Impuesto",
+        },
+    };
+
+    // Create the invoice.
+    const invoice = new PDFInvoice(payload, config);
+    const pdf = await invoice.create();
+
+    console.log(pdf);
+}
+```
+
+### Config limitations: 
+
+For now only `latin` characters are supported. It seems like a limitation of `Helvetica` font. I'll be adding support for other languages soon.
+
 ## Types
 
 This library is written in TypeScript. If you need to import the types, then you can import them from `global.d.ts` file. Refer to [Global types](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/stable/global.d.ts) file for more information.
@@ -282,8 +326,12 @@ import type { CompanyInfo, CustomerInfo, InvoiceInfo, ItemInfo, QRInfo, InvoiceP
 
 Refer to [releases](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases) section for more information.
 
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
 ## Todo
 
 - [ ] Add design/style options.
-- [ ] Add configuration options.
+- [ ] Add configuration options - (Strings, Fonts, Styles, etc.)
 - [ ] Add support for multi-language.
