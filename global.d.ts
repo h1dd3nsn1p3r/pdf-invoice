@@ -9,6 +9,7 @@ export interface CompanyInfo {
 	email?: string;
 	website?: string;
 	taxId?: string;
+	bank?: string;
 }
 
 export interface CustomerInfo {

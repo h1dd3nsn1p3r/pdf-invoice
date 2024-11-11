@@ -294,6 +294,13 @@ export class PDFInvoice {
 			});
 		}
 
+		if (this.company.bank) {
+			sectionCompany.columns[0].stack.push({
+				text: this.company.bank,
+				style: "text",
+			});
+		}
+
 		// Invoice information.
 		if (this.invoice.label) {
 			sectionCompany.columns[1].stack.unshift({
