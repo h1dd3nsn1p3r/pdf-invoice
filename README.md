@@ -52,6 +52,7 @@ const payload = {
         email: "Mail: hello@festrol.io",
         website: "Web: https://www.festrolcorp.io",
         taxId: "Tax ID: 1234567890", // Optional.
+				bank: "IBAN: 1234567890AC", // Optional.
     },
     customer: {
         name: "John Doe",
@@ -128,6 +129,7 @@ const company = {
     email: "hello@company.com", // Optional.
     website: "Web: https://www.festrolcorp.io" // Optional.
     taxId: "Tax ID: 1234567890", // Optional.
+		bank: "IBAN: 1234567890AC", // Optional.
 }
 ```
 
