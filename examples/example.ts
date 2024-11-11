@@ -12,6 +12,7 @@ const payload = {
 		phone: "Tel: (+11) 245 543 903",
 		email: "Mail: hello@festrol.io",
 		website: "Web: https://www.festrolcorp.io",
+		bank: "IBAN: 0123456789AC",
 	},
 	customer: {
 		name: "John Doe",
