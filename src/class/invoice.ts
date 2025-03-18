@@ -47,16 +47,6 @@ export class PDFInvoice {
 		this.locale = this.invoice?.locale || "en-US";
 		this.currency = this.invoice?.currency?.toUpperCase() || "USD";
 
-		const regex = /^[a-z]{2}-[A-Z]{2}$/;
-
-		if (!regex.test(this.locale)) {
-			throw new Error("Invalid locale format, check doc.");
-		}
-
-		if (this.currency.length !== 3) {
-			throw new Error("Invalid currency format, check doc.");
-		}
-
 		/**
 		 * Invoice path.
 		 */

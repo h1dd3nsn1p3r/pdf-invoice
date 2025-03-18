@@ -97,7 +97,7 @@ const helper: Helpers = {
 	 * @param {number | string} amount.
 	 * @param {Record<string, string>} args.
 	 * @returns {string} string.
-	 * @since 1.0.9
+	 * @since 1.0.10
 	 */
 	formatCurrency: function (
 		amount: number | string,
