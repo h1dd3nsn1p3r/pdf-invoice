@@ -25,7 +25,8 @@ const payload = {
 		date: "25/12/2023",
 		dueDate: "25/12/2023",
 		status: "Paid!",
-		currency: "£",
+		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
+		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
 	},
 	items: [

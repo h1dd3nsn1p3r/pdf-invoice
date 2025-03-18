@@ -44,60 +44,61 @@ The payload is the data that you want to show on the invoice. It is an object wi
 
 ```js
 const payload = {
-    company: {
-        logo: "<svg>...</svg>", // Optional. SVG logo of your company.
-        name: "Festrol Corp.",
-        address: "1711 W. El Segundo Blvd, Hawthorne, Canada - 90250",
-        phone: "Tel: (+11) 245 543 903",
-        email: "Mail: hello@festrol.io",
-        website: "Web: https://www.festrolcorp.io",
-        taxId: "Tax ID: 1234567890", // Optional.
-				bank: "IBAN: 1234567890AC", // Optional.
-    },
-    customer: {
-        name: "John Doe",
-        company: "Xero Inc.", // Optional.
-        address: "1234 Main Street, New York, NY 10001",
-        phone: "Tel: (555) 555-5555",
-        email: "Mail: joe@example.com",
-        taxId: "Tax ID: 1234567890", // Optional.
-    },
-    invoice: {
-        number: 1721, // String or number.
-        date: "25/12/2023", // Default is current date.
-        dueDate: "25/12/2023", // Default is current date.
-        status: "Paid!",
-        currency: "€", // Default is "$",
-        path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file. 
-    },
-    items: [
-        {
-            name: "Cloud VPS Server - Starter Plan",
-            quantity: 1,
-            price: 400,
-            tax: 0, // Specify tax in percentage. Default is 0.
-        },
-        {
-            name: "Domain Registration - example.com",
-            quantity: 1,
-            price: 20,
-            tax: 0, // Specify tax in percentage. Default is 0.
-        },
-        {
-            name: "Maintenance Charge - Yearly",
-            quantity: 1,
-            price: 300,
-            tax: 0, // Specify tax in percentage. Default is 0.
-        },
-    ],
-    qr: {
-        data: "https://www.festrolcorp.io",
-        width: 100, // Default is 50.
-    },
-    note: {
-        text: "Thank you for your business.",
-        italic: false, // Default is true.
-    }
+	company: {
+		logo: "<svg>...</svg>", // Optional. SVG logo of your company.
+		name: "Festrol Corp.",
+		address: "1711 W. El Segundo Blvd, Hawthorne, Canada - 90250",
+		phone: "Tel: (+11) 245 543 903",
+		email: "Mail: hello@festrol.io",
+		website: "Web: https://www.festrolcorp.io",
+		taxId: "Tax ID: 1234567890", // Optional.
+		bank: "IBAN: 1234567890AC", // Optional.
+	},
+	customer: {
+		name: "John Doe",
+		company: "Xero Inc.", // Optional.
+		address: "1234 Main Street, New York, NY 10001",
+		phone: "Tel: (555) 555-5555",
+		email: "Mail: joe@example.com",
+		taxId: "Tax ID: 1234567890", // Optional.
+	},
+	invoice: {
+		number: 1721, // String or number.
+		date: "25/12/2023", // Default is current date.
+		dueDate: "25/12/2023", // Default is current date.
+		status: "Paid!",
+		locale: "es-ES", // BCP 47 language tag. Default is "en-US".
+		currency: "EUR", // ISO 4217 currency code. Default is "USD".
+		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file. 
+	},
+	items: [
+		{
+			name: "Cloud VPS Server - Starter Plan",
+			quantity: 1,
+			price: 400,
+			tax: 0, // Specify tax in percentage. Default is 0.
+		},
+		{
+			name: "Domain Registration - example.com",
+			quantity: 1,
+			price: 20,
+			tax: 0, // Specify tax in percentage. Default is 0.
+		},
+		{
+			name: "Maintenance Charge - Yearly",
+			quantity: 1,
+			price: 300,
+			tax: 0, // Specify tax in percentage. Default is 0.
+		},
+	],
+	qr: {
+		data: "https://www.festrolcorp.io",
+		width: 100, // Default is 50.
+	},
+	note: {
+		text: "Thank you for your business.",
+		italic: false, // Default is true.
+	}
 };
 ```
 
@@ -105,12 +106,12 @@ const payload = {
 
 ```js
 const payload = {
-    company: {
-        name: "Festrol Corp.",
-        address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250",
-        phone: "Tel: (+11) 245 543 903",
-        email: "Mail: email@yourcompany.com"
-    },
+	company: {
+		name: "Festrol Corp.",
+		address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250",
+		phone: "Tel: (+11) 245 543 903",
+		email: "Mail: email@yourcompany.com"
+	},
 };
 ```
 
@@ -122,20 +123,18 @@ This is the information about your company. It is an object with the following s
 
 ```js
 const company = {
-    logo: "<svg>...</svg>", // Optional. SVG logo of your company.
-    name: "Festrol Corp.", // Optional or required if logo is not supplied.
-    address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250", // Optional.
-    phone: "Tel: (+11) 245 543 903", // Optional.
-    email: "hello@company.com", // Optional.
-    website: "Web: https://www.festrolcorp.io" // Optional.
-    taxId: "Tax ID: 1234567890", // Optional.
-		bank: "IBAN: 1234567890AC", // Optional.
+	logo: "<svg>...</svg>", // Optional. SVG logo of your company.
+	name: "Festrol Corp.", // Optional or required if logo is not supplied.
+	address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250", // Optional.
+	phone: "Tel: (+11) 245 543 903", // Optional.
+	email: "hello@company.com", // Optional.
+	website: "Web: https://www.festrolcorp.io" // Optional.
+	taxId: "Tax ID: 1234567890", // Optional.
+	bank: "IBAN: 1234567890AC", // Optional.
 }
 ```
 
 For now, only **svg logo** can be used. If you wish to use logo & do not want the company name, then do not pass the `name` field. Rest of the fields are optional.
-
-```js
 
 ### Invoice
 
@@ -143,23 +142,26 @@ This is the information about the invoice. It is an object with the following st
 
 ```js
 const invoice = {
-    number: 1721, // Required.
-    date: "25/12/2023", // Optional. Default is current date.
-    dueDate: "25/12/2023", // Optional. Default is current date.
-    status: "Paid!", // Optional. Default is "Due pending!".
-    currency: "€", // Optional. Default is "$".
+	number: 1721, // Required.
+	date: "25/12/2023", // Optional. Default is current date.
+	dueDate: "25/12/2023", // Optional. Default is current date.
+	status: "Paid!", // Optional. Default is "Due pending!".
+	locale: "es-ES", // Optional. Default is "en-US".
+	currency: "EUR", // Optional. Default is "USD".
 }
 ```
 
-The invoice number is required. It might be a `integer` that you use to track your invoices. In most cases, it is a unique number that reference the `order ID` or invoice sequence number in your database. Rest of the fields are optional.
+The invoice number is required. It might be a `int` that you use to track your invoices. In most cases, it is a unique number that reference the `order ID` or invoice sequence number in your database. Rest of the fields are optional.
 
-If path is supplied in the payload, then the PDF will be generated at that location. For example:
+The `locale` is the BCP 47 language tag. Default is `en-US`. You can find the list of language tags [here](http://4umi.com/web/html/languagecodes.php). The `currency` is the ISO 4217 currency code. Default is `USD`. You can find the list of currency codes [here](https://www.iban.com/currency-codes). For more information on locale and currency, refer to [Mozilla Int Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) documentation.
+
+If `path` is supplied in the payload, then the PDF will be generated at that location. For example:
 
 ```js
 const file = "invoice" + "-#" + 1729 + "-" + new Date().getTime(); // invoice-#1729-1630480000000
 const location = path.join(__dirname, "/invoices/" + file + ".pdf"); 
 const invoice = {
-    path: location, // Required.
+  path: location, // Required.
 }
 ```
 
@@ -171,12 +173,12 @@ This is the information about your customer. It is an object with the following 
 
 ```js
 const customer = {
-    name: "John Doe", // Required.
-    company: "Xero Inc.", // Optional.
-    address: "1234 Main Street, New York, \n NY 10001", // Optional.
-    phone: "Tel: (555) 555-5555", // Optional.
-    email: "joedeo@example.com", // Optional.
-    taxId: "Tax ID: 1234567890", // Optional.
+	name: "John Doe", // Required.
+	company: "Xero Inc.", // Optional.
+	address: "1234 Main Street, New York, \n NY 10001", // Optional.
+	phone: "Tel: (555) 555-5555", // Optional.
+	email: "joedeo@example.com", // Optional.
+	taxId: "Tax ID: 1234567890", // Optional.
 }
 ```
 
@@ -188,24 +190,24 @@ Items are the products or services that you are selling. It is an `array` of obj
 
 ```js
 const items = [
-    {
-        name: "Cloud VPS Server - Starter Plan", // Required.
-        quantity: 1, // Required.
-        price: 400, // Required.
-        tax: 0, // Optional. Specify tax in percentage. Default is 0.
-    },
-    {
-        name: "Domain Registration - example.com", // Required.
-        quantity: 1, // Required.
-        price: 20, // Required.
-        tax: 0, // Optional. Specify tax in percentage. Default is 0.
-    },
-    {
-        name: "Maintenance Charge - Yearly", // Required.
-        quantity: 1, // Required.
-        price: 300, // Required.
-        tax: 0, // Optional. Specify tax in percentage. Default is 0.
-    },
+	{
+		name: "Cloud VPS Server - Starter Plan", // Required.
+		quantity: 1, // Required.
+		price: 400, // Required.
+		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+	},
+	{
+		name: "Domain Registration - example.com", // Required.
+		quantity: 1, // Required.
+		price: 20, // Required.
+		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+	},
+	{
+		name: "Maintenance Charge - Yearly", // Required.
+		quantity: 1, // Required.
+		price: 300, // Required.
+		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+	},
 ];
 ```
 
@@ -213,12 +215,12 @@ The `name`, `quantity` and `price` of the item is required. Rest of the fields a
 
 ```js
 const items = [
-    {
-        name: "Cloud VPS Server - Starter Plan", // Required.
-        quantity: 1, // Required.
-        price: 400, // Required.
-        tax: 0, // Optional. Specify tax in percentage. Default is 0.
-    },
+	{
+		name: "Cloud VPS Server - Starter Plan", // Required.
+		quantity: 1, // Required.
+		price: 400, // Required.
+		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+	},
 ];
 ```
 
@@ -228,8 +230,8 @@ If you want to add a QR code to the invoice, then you can use this field. It is 
 
 ```js
 const qr = {
-    data: "https://www.festrolcorp.io/", // Required. The data that you want to encode in the QR code.
-    width: "100", // Optional. Default is 50. 
+	data: "https://www.festrolcorp.io/", // Required. The data that you want to encode in the QR code.
+	width: "100", // Optional. Default is 50. 
 }
 ```
 
@@ -252,17 +254,17 @@ const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 
 const handleInvoice = async(): Promise<void> => {
     
-    const payload = {
-        // Prepare payload.
-    };
+	const payload = {
+			// Prepare payload.
+	};
 
-    /**
-    * Create the invoice.
-    */
-    const invoice = new PDFInvoice(payload);
-    const pdf = await invoice.create(); // Returns promise, await it.
+	/**
+	* Create the invoice.
+	*/
+	const invoice = new PDFInvoice(payload);
+	const pdf = await invoice.create(); // Returns promise, await it.
 
-    console.log(pdf); // Full path to the PDF file.
+	console.log(pdf); // Full path to the PDF file.
 }
 
 handleInvoice();
@@ -283,34 +285,34 @@ const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 
 const create = async(): Promise<void> => {
     
-    const payload = {
-        // ....
-    };
+	const payload = {
+			// ....
+	};
 
-    const config = {
-        // Custom labels.
-        string: {
-            invoice: "F A C T U A",
-            refNumber: "Referencia",
-            date: "Fecha",
-            dueDate: "Fecha de vencimiento",
-            status: "Estado",
-            billTo: "Facturar a",
-            item: "Artículo",
-            quantity: "Cantidad",
-            price: "Precio",
-            tax: "Impuesto",
-            total: "Total",
-            subTotal: "Subtotal",
-            totalTax: "Total Impuesto",
-        },
-    };
+	const config = {
+		// Custom labels.
+		string: {
+				invoice: "F A C T U A",
+				refNumber: "Referencia",
+				date: "Fecha",
+				dueDate: "Fecha de vencimiento",
+				status: "Estado",
+				billTo: "Facturar a",
+				item: "Artículo",
+				quantity: "Cantidad",
+				price: "Precio",
+				tax: "Impuesto",
+				total: "Total",
+				subTotal: "Subtotal",
+				totalTax: "Total Impuesto",
+		},
+	};
 
-    // Create the invoice.
-    const invoice = new PDFInvoice(payload, config);
-    const pdf = await invoice.create();
+	// Create the invoice.
+	const invoice = new PDFInvoice(payload, config);
+	const pdf = await invoice.create();
 
-    console.log(pdf);
+	console.log(pdf);
 }
 ```
 
@@ -326,12 +328,12 @@ All these three fonts includes regular, bold, italic and bold-italic styles. You
 
 ```js
 const config = {
-    // ....
-		style: {
-			font: "Helvetica", // "Helvetica", "Times", "Courier"
-			fontSize: 10, // Optional. Default is 10.
-			lineHeight: 1.8, // Optional. Default is 1.8.
-			color: "#000000", // Optional. Default is black.
+	// ....
+	style: {
+		font: "Helvetica", // "Helvetica", "Times", "Courier"
+		fontSize: 10, // Optional. Default is 10.
+		lineHeight: 1.8, // Optional. Default is 1.8.
+		color: "#000000", // Optional. Default is black.
 	},
 };
 ```
@@ -339,21 +341,21 @@ Any font can be used with the `font` option by passing the fonts `TTF` files pat
 
 ```js
 const config = {
-		// ....
-		font: {
-			Noto: {
-				normal: path.join(__dirname, "fonts/noto/regular.ttf"),
-				italics: path.join(__dirname, "fonts/noto/italic.ttf"),
-				bold: path.join(__dirname, "fonts/noto/bold.ttf"),
-				bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
-			},
+	// ....
+	font: {
+		Noto: {
+			normal: path.join(__dirname, "fonts/noto/regular.ttf"),
+			italics: path.join(__dirname, "fonts/noto/italic.ttf"),
+			bold: path.join(__dirname, "fonts/noto/bold.ttf"),
+			bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
 		},
-		style: {
-			font: "Noto",
-			fontSize: 10, // Optional. Default is 10.
-			lineHeight: 1.8, // Optional. Default is 1.8.
-			color: "#000000", // Optional. Default is black.
 	},
+	style: {
+		font: "Noto",
+		fontSize: 10, // Optional. Default is 10.
+		lineHeight: 1.8, // Optional. Default is 1.8.
+		color: "#000000", // Optional. Default is black.
+},
 };
 ```
 If you need additional information do check the [example](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts). In the example, I have used "Noto" and the `TTF` files of Noto font are included in the `fonts` directory. If you have non-latin characters, then you can use any custom font that supports the characters.
