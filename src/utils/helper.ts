@@ -5,6 +5,10 @@ interface Helpers {
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
 	calcFinalTotal(items: ItemInfo[]): number | string;
+	formatCurrency(
+		amount: number | string,
+		args?: Record<string, string>
+	): string;
 }
 
 const helper: Helpers = {
@@ -83,6 +87,37 @@ const helper: Helpers = {
 		const tax = Number(this.calcTax(items));
 
 		return (subTotal + tax).toFixed(2);
+	},
+
+	/**
+	 * Format currency in international format.
+	 *
+	 * @ref https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat
+	 *
+	 * @param {number | string} amount.
+	 * @param {Record<string, string>} args.
+	 * @returns {string} string.
+	 * @since 1.0.9
+	 */
+	formatCurrency: function (
+		amount: number | string,
+		args: Record<string, string> = { locale: "en-US", currency: "USD" }
+	): string {
+		amount = Number(amount);
+
+		if (!amount || isNaN(amount)) {
+			return new Intl.NumberFormat(args.locale, {
+				style: "currency",
+				currency: args.currency,
+			}).format(0);
+		}
+
+		amount = amount.toFixed(2);
+
+		return new Intl.NumberFormat(args.locale, {
+			style: "currency",
+			currency: args.currency,
+		}).format(Number(amount));
 	},
 };
 

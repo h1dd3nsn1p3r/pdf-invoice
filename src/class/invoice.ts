@@ -21,6 +21,7 @@ export class PDFInvoice {
 	invoice: InvoiceInfo;
 	customer: CustomerInfo;
 	items: ItemInfo[];
+	locale: string;
 	currency: string;
 	path: string;
 	qr: QRInfo;
@@ -43,7 +44,18 @@ export class PDFInvoice {
 		/**
 		 * Currency.
 		 */
-		this.currency = this.invoice.currency || "$";
+		this.locale = this.invoice?.locale || "en-US";
+		this.currency = this.invoice?.currency?.toUpperCase() || "USD";
+
+		const regex = /^[a-z]{2}-[A-Z]{2}$/;
+
+		if (!regex.test(this.locale)) {
+			throw new Error("Invalid locale format, check doc.");
+		}
+
+		if (this.currency.length !== 3) {
+			throw new Error("Invalid currency format, check doc.");
+		}
 
 		/**
 		 * Invoice path.
@@ -433,16 +445,22 @@ export class PDFInvoice {
 			},
 		};
 
+		const currOptions = {
+			locale: this.locale,
+			currency: this.currency,
+		};
+
 		if (this.items.length > 0) {
 			this.items.forEach((item) => {
-				const totalPrice = helper.calcItemTotal(item);
-
 				sectionItems.table.body.push([
 					`\n ${item.name}`,
 					`\n ${item.quantity}`,
-					`\n ${this.currency}${item.price}`,
-					`\n ${item.tax || 0}%`,
-					`\n ${this.currency}${totalPrice}`,
+					`\n ${helper.formatCurrency(item.price, currOptions)}`,
+					`\n ${item.tax && item.tax > 0 ? item.tax + "%" : "-"}`,
+					`\n ${helper.formatCurrency(
+						helper.calcItemTotal(item),
+						currOptions
+					)}`,
 				]);
 			});
 		}
@@ -465,7 +483,7 @@ export class PDFInvoice {
 				{
 					width: 200,
 					lineHeight: 1.5,
-					style: "textBold",
+					style: "normal",
 					table: {
 						widths: [80, "*"],
 						headerRows: 1,
@@ -473,15 +491,24 @@ export class PDFInvoice {
 						body: [
 							[
 								`\n ${this.config.string.subTotal}`,
-								`\n ${this.currency}${helper.calcSubTotal(this.items)}`,
+								`\n ${helper.formatCurrency(
+									helper.calcSubTotal(this.items),
+									currOptions
+								)}`,
 							],
 							[
 								`\n ${this.config.string.totalTax}`,
-								`\n ${this.currency}${helper.calcTax(this.items)}`,
+								`\n ${helper.formatCurrency(
+									helper.calcTax(this.items),
+									currOptions
+								)}`,
 							],
 							[
 								`\n ${this.config.string.total}`,
-								`\n ${this.currency}${helper.calcFinalTotal(this.items)}`,
+								`\n ${helper.formatCurrency(
+									helper.calcFinalTotal(this.items),
+									currOptions
+								)}`,
 							],
 						],
 					},

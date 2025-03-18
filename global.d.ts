@@ -29,6 +29,7 @@ export interface InvoiceInfo {
 	status: string;
 	path: string;
 	currency?: string;
+	locale?: string;
 }
 
 export interface ItemInfo {
