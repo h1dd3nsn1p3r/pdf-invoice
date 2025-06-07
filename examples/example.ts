@@ -28,6 +28,7 @@ const payload = {
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
+		orderDiscount: 20,
 	},
 	items: [
 		{

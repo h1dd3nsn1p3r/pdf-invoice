@@ -30,6 +30,7 @@ export interface InvoiceInfo {
 	path: string;
 	currency?: string;
 	locale?: string;
+	orderDiscount?: number;
 }
 
 export interface ItemInfo {

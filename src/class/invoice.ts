@@ -27,6 +27,7 @@ export class PDFInvoice {
 	qr: QRInfo;
 	note: Notes;
 	date: string;
+	orderDiscount?: number;
 	config: Configuration;
 	constructor(payload: InvoicePayLoad, config: Configuration = defaultConfig) {
 		this.payload = payload;
@@ -65,6 +66,7 @@ export class PDFInvoice {
 		 * Configuration.
 		 */
 		this.config = config;
+		this.orderDiscount = payload.invoice.orderDiscount;
 	}
 
 	/**
@@ -502,14 +504,14 @@ export class PDFInvoice {
 							[
 								`\n ${this.config.string.totalDiscount}`,
 								`\n ${helper.formatCurrency(
-									helper.calcTotalDiscount(this.items),
+									helper.calcTotalDiscount(this.orderDiscount),
 									currOptions
 								)}`,
 							],
 							[
 								`\n ${this.config.string.total}`,
 								`\n ${helper.formatCurrency(
-									helper.calcFinalTotal(this.items),
+									helper.calcFinalTotal(this.items, this.orderDiscount),
 									currOptions
 								)}`,
 							],

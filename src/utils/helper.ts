@@ -6,8 +6,8 @@ interface Helpers {
 
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
-	calcFinalTotal(items: ItemInfo[]): number | string;
-	calcTotalDiscount(items: ItemInfo[]): number | string;
+	calcFinalTotal(items: ItemInfo[], discount?: number): number | string;
+	calcTotalDiscount(discount: number): number;
 	formatCurrency(
 		amount: number | string,
 		args?: Record<string, string>
@@ -87,14 +87,19 @@ const helper: Helpers = {
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
-	calcFinalTotal: function (items: ItemInfo[]): number | string {
+	calcFinalTotal: function (
+		items: ItemInfo[],
+		discount?: number
+	): number | string {
 		if (items.length === 0) {
 			return 0;
 		}
 
 		const subTotal = Number(this.calcSubTotal(items));
 		const tax = Number(this.calcTax(items));
-		const totalDiscount = Number(this.calcTotalDiscount(items));
+		if (discount === undefined) return (subTotal + tax).toFixed(2);
+
+		const totalDiscount = Number(this.calcTotalDiscount(discount));
 
 		return (subTotal + tax - totalDiscount).toFixed(2);
 	},
@@ -102,22 +107,12 @@ const helper: Helpers = {
 	/**
 	 * Calculate total discount.
 	 *
-	 * @param {Object} items.
-	 * @returns {number} total.
+	 * @param {number} discount.
+	 * @returns {number} discount.
 	 * @since 1.0.0
 	 */
-	calcTotalDiscount: function (items: ItemInfo[]): number | string {
-		if (items.length === 0) {
-			return 0;
-		}
-
-		let total = 0;
-
-		items.forEach((item) => {
-			total += Number(this.calcItemTotalDiscount(item));
-		});
-
-		return total.toFixed(2);
+	calcTotalDiscount: function (discount: number): number {
+		return discount;
 	},
 
 	/**
