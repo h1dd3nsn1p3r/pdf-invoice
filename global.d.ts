@@ -37,6 +37,7 @@ export interface ItemInfo {
 	quantity: number;
 	price: number;
 	tax?: number;
+	discount?: number;
 }
 
 export interface QRInfo {
@@ -96,9 +97,11 @@ export interface Configuration {
 		item?: string;
 		quantity?: string;
 		price?: string;
+		discount?: string;
 		tax?: string;
 		total?: string;
 		subTotal?: string;
 		totalTax?: string;
+		totalDiscount?: string;
 	};
 }

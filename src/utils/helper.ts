@@ -2,9 +2,12 @@ import type { ItemInfo } from "../../global";
 
 interface Helpers {
 	calcItemTotal(item: ItemInfo): number | string;
+	calcItemTotalDiscount(item: ItemInfo): number | string;
+
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
 	calcFinalTotal(items: ItemInfo[]): number | string;
+	calcTotalDiscount(items: ItemInfo[]): number | string;
 	formatCurrency(
 		amount: number | string,
 		args?: Record<string, string>
@@ -23,6 +26,12 @@ const helper: Helpers = {
 		const price = item.price || 0;
 		const quantity = item.quantity || 1;
 		return (price * quantity).toFixed(2);
+	},
+
+	calcItemTotalDiscount: function (item: ItemInfo): string {
+		const discount = item.discount || 0;
+		const quantity = item.quantity || 1;
+		return (discount * quantity).toFixed(2);
 	},
 
 	/**
@@ -85,8 +94,30 @@ const helper: Helpers = {
 
 		const subTotal = Number(this.calcSubTotal(items));
 		const tax = Number(this.calcTax(items));
+		const totalDiscount = Number(this.calcTotalDiscount(items));
 
-		return (subTotal + tax).toFixed(2);
+		return (subTotal + tax - totalDiscount).toFixed(2);
+	},
+
+	/**
+	 * Calculate total discount.
+	 *
+	 * @param {Object} items.
+	 * @returns {number} total.
+	 * @since 1.0.0
+	 */
+	calcTotalDiscount: function (items: ItemInfo[]): number | string {
+		if (items.length === 0) {
+			return 0;
+		}
+
+		let total = 0;
+
+		items.forEach((item) => {
+			total += Number(this.calcItemTotalDiscount(item));
+		});
+
+		return total.toFixed(2);
 	},
 
 	/**

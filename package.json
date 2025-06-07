@@ -35,5 +35,10 @@
 	},
 	"dependencies": {
 		"pdfmake": "^0.2.8"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
 	}
 }

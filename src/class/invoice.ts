@@ -420,7 +420,7 @@ export class PDFInvoice {
 			margin: [0, 30, 0, 0],
 			lineHeight: 1.5,
 			table: {
-				widths: [200, 50, "*", 50, "*"],
+				widths: [200, 50, "*", 50, 50, "*"],
 				headerRows: 1,
 				lineHeight: 1.5,
 				body: [
@@ -429,6 +429,7 @@ export class PDFInvoice {
 						`\n ${this.config.string.quantity}`,
 						`\n ${this.config.string.price}`,
 						`\n ${this.config.string.tax}`,
+						`\n ${this.config.string.discount}`,
 						`\n ${this.config.string.total}`,
 					],
 				] as any,
@@ -447,6 +448,11 @@ export class PDFInvoice {
 					`\n ${item.quantity}`,
 					`\n ${helper.formatCurrency(item.price, currOptions)}`,
 					`\n ${item.tax && item.tax > 0 ? item.tax + "%" : "-"}`,
+					`\n ${
+						item.discount && item.discount > 0
+							? helper.formatCurrency(item.discount, currOptions)
+							: "N/A"
+					}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
 						currOptions
@@ -490,6 +496,13 @@ export class PDFInvoice {
 								`\n ${this.config.string.totalTax}`,
 								`\n ${helper.formatCurrency(
 									helper.calcTax(this.items),
+									currOptions
+								)}`,
+							],
+							[
+								`\n ${this.config.string.totalDiscount}`,
+								`\n ${helper.formatCurrency(
+									helper.calcTotalDiscount(this.items),
 									currOptions
 								)}`,
 							],
