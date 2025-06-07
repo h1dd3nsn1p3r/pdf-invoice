@@ -28,7 +28,7 @@ const payload = {
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
-		orderDiscount: 20,
+		orderDiscount: 10,
 	},
 	items: [
 		{
@@ -43,14 +43,14 @@ const payload = {
 			quantity: 2,
 			price: 20,
 			tax: 0,
-			discount: 4,
+			discount: 0,
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
 			price: 300,
 			tax: 0,
-			discount: 4,
+			discount: 0,
 		},
 	],
 	qr: {

@@ -69,24 +69,29 @@ const payload = {
 		status: "Paid!",
 		locale: "es-ES", // BCP 47 language tag. Default is "en-US".
 		currency: "EUR", // ISO 4217 currency code. Default is "USD".
-		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file. 
+		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file.
+		orderDiscount: 10, // total order discount
+
 	},
 	items: [
 		{
 			name: "Cloud VPS Server - Starter Plan",
 			quantity: 1,
 			price: 400,
+			discount: 19,
 			tax: 0, // Specify tax in percentage. Default is 0.
 		},
 		{
 			name: "Domain Registration - example.com",
 			quantity: 1,
+			discount: 19,
 			price: 20,
 			tax: 0, // Specify tax in percentage. Default is 0.
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
+			discount: 0,
 			price: 300,
 			tax: 0, // Specify tax in percentage. Default is 0.
 		},
