@@ -28,15 +28,15 @@ const payload = {
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
-		orderDiscount: 20,
+		orderDiscount: 3,
 	},
 	items: [
 		{
 			name: "Cloud VPS Server - Starter Plan",
 			quantity: 1,
 			price: 400,
-			tax: 0,
-			discount: 0,
+			tax: 13,
+			discount: 5,
 		},
 		{
 			name: "Domain Registration - example.com",
@@ -80,21 +80,22 @@ const config = {
 		subTotal: "Subtotal",
 		totalTax: "Total Tax",
 		totalDiscount: "Total Discount",
+		grandTotal: "Grand Total",
 	},
 	style: {
-		font: "Noto", // "Helvetica", "Times", "Courier"
+		//font: "Noto", // "Helvetica", "Times", "Courier"
 		fontSize: 10,
 		lineHeight: 1.2,
 		color: "#000000",
 	},
-	font: {
-		Noto: {
-			normal: path.join(__dirname, "fonts/noto/regular.ttf"),
-			italics: path.join(__dirname, "fonts/noto/italic.ttf"),
-			bold: path.join(__dirname, "fonts/noto/bold.ttf"),
-			bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
-		},
-	},
+	//font: {
+	//	Noto: {
+	//		normal: path.join(__dirname, "fonts/noto/regular.ttf"),
+	//		italics: path.join(__dirname, "fonts/noto/italic.ttf"),
+	//		bold: path.join(__dirname, "fonts/noto/bold.ttf"),
+	//		bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
+	//	},
+	//},
 };
 
 /**

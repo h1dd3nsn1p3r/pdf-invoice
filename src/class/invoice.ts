@@ -422,7 +422,7 @@ export class PDFInvoice {
 			margin: [0, 30, 0, 0],
 			lineHeight: 1.5,
 			table: {
-				widths: [200, 50, "*", 50, 50, "*"],
+				widths: [200, 30, "*", 50, 50, "*"],
 				headerRows: 1,
 				lineHeight: 1.5,
 				body: [
@@ -453,7 +453,7 @@ export class PDFInvoice {
 					`\n ${
 						item.discount && item.discount > 0
 							? helper.formatCurrency(item.discount, currOptions)
-							: "N/A"
+							: "-"
 					}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
@@ -515,11 +515,23 @@ export class PDFInvoice {
 								: []),
 
 							[
-								`\n ${this.config.string.total}`,
-								`\n ${helper.formatCurrency(
-									helper.calcFinalTotal(this.items, this.orderDiscount),
-									currOptions
-								)}`,
+								{
+									text: `\n ${
+										this.config.string.grandTotal || this.config.string.total
+									}`,
+									fillColor: "#DDDDDD",
+									color: "#000000",
+									bold: true,
+								},
+								{
+									text: `\n ${helper.formatCurrency(
+										helper.calcFinalTotal(this.items, this.orderDiscount),
+										currOptions
+									)}`,
+									fillColor: "#DDDDDD",
+									color: "#000000",
+									bold: true,
+								},
 							],
 						],
 					},

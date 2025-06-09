@@ -104,5 +104,6 @@ export interface Configuration {
 		subTotal?: string;
 		totalTax?: string;
 		totalDiscount?: string;
+		grandTotal?: string;
 	};
 }

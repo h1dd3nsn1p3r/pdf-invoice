@@ -71,7 +71,6 @@ const payload = {
 		currency: "EUR", // ISO 4217 currency code. Default is "USD".
 		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file.
 		orderDiscount: 10, // total order discount
-
 	},
 	items: [
 		{
@@ -258,9 +257,9 @@ Once you have the payload ready, you can generate the PDF using the following co
 const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 
 const handleInvoice = async(): Promise<void> => {
-    
+  
 	const payload = {
-			// Prepare payload.
+		// Prepare payload.
 	};
 
 	/**
@@ -291,25 +290,26 @@ const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 const create = async(): Promise<void> => {
     
 	const payload = {
-			// ....
+		// ....
 	};
 
 	const config = {
 		// Custom labels.
 		string: {
-				invoice: "F A C T U A",
-				refNumber: "Referencia",
-				date: "Fecha",
-				dueDate: "Fecha de vencimiento",
-				status: "Estado",
-				billTo: "Facturar a",
-				item: "Artículo",
-				quantity: "Cantidad",
-				price: "Precio",
-				tax: "Impuesto",
-				total: "Total",
-				subTotal: "Subtotal",
-				totalTax: "Total Impuesto",
+			invoice: "F A C T U A",
+			refNumber: "Referencia",
+			date: "Fecha",
+			dueDate: "Fecha de vencimiento",
+			status: "Estado",
+			billTo: "Facturar a",
+			item: "Artículo",
+			quantity: "Cantidad",
+			price: "Precio",
+			tax: "Impuesto",
+			total: "Total",
+			subTotal: "Subtotal",
+			totalTax: "Total Impuesto",
+			grandTotal: "Grand Total", // Added in v1.0.11
 		},
 	};
 
@@ -360,7 +360,7 @@ const config = {
 		fontSize: 10, // Optional. Default is 10.
 		lineHeight: 1.8, // Optional. Default is 1.8.
 		color: "#000000", // Optional. Default is black.
-},
+	},
 };
 ```
 If you need additional information do check the [example](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts). In the example, I have used "Noto" and the `TTF` files of Noto font are included in the `fonts` directory. If you have non-latin characters, then you can use any custom font that supports the characters.
