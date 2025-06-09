@@ -3,11 +3,9 @@ import type { ItemInfo } from "../../global";
 interface Helpers {
 	calcItemTotal(item: ItemInfo): number | string;
 	calcItemTotalDiscount(item: ItemInfo): number | string;
-
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
 	calcFinalTotal(items: ItemInfo[], discount?: number): number | string;
-	calcTotalDiscount(discount: number): number;
 	formatCurrency(
 		amount: number | string,
 		args?: Record<string, string>
@@ -99,20 +97,7 @@ const helper: Helpers = {
 		const tax = Number(this.calcTax(items));
 		if (discount === undefined) return (subTotal + tax).toFixed(2);
 
-		const totalDiscount = Number(this.calcTotalDiscount(discount));
-
-		return (subTotal + tax - totalDiscount).toFixed(2);
-	},
-
-	/**
-	 * Calculate total discount.
-	 *
-	 * @param {number} discount.
-	 * @returns {number} discount.
-	 * @since 1.0.0
-	 */
-	calcTotalDiscount: function (discount: number): number {
-		return discount;
+		return (subTotal + tax - discount).toFixed(2);
 	},
 
 	/**

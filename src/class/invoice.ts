@@ -501,13 +501,19 @@ export class PDFInvoice {
 									currOptions
 								)}`,
 							],
-							[
-								`\n ${this.config.string.totalDiscount}`,
-								`\n ${helper.formatCurrency(
-									helper.calcTotalDiscount(this.orderDiscount),
-									currOptions
-								)}`,
-							],
+
+							...(this.orderDiscount && this.orderDiscount > 0
+								? [
+										[
+											`\n ${this.config.string.totalDiscount}`,
+											`\n ${helper.formatCurrency(
+												this.orderDiscount,
+												currOptions
+											)}`,
+										],
+								  ]
+								: []),
+
 							[
 								`\n ${this.config.string.total}`,
 								`\n ${helper.formatCurrency(
