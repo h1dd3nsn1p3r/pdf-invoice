@@ -22,10 +22,21 @@ const helper: Helpers = {
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
-	calcItemTotal: function (item: ItemInfo): string {
-		const price = item.price || 0;
-		const quantity = item.quantity || 1;
-		return (price * quantity).toFixed(2);
+	calcItemTotal: function (item: ItemInfo): number | string {
+		const subtotal = item.quantity * item.price;
+		let discountAmount = 0;
+		let taxAmount = 0;
+
+		if(item.discount){
+			discountAmount = subtotal *  (item.discount / 100);
+		}
+		const discountedSubtotal = subtotal - discountAmount;
+
+		if(item.tax){
+			taxAmount = discountedSubtotal * (item.tax / 100);
+		}
+
+		return discountedSubtotal + taxAmount;
 	},
 
 	/**
