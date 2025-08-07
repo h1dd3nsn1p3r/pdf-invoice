@@ -9,7 +9,7 @@
  ${o.quantity}`,`
  ${r.formatCurrency(o.price,l)}`,`
  ${o.tax&&o.tax>0?o.tax+"%":"-"}`,`
- ${o.discount&&o.discount>0?r.formatCurrency(o.discount,l):"-"}`,`
+ ${o.discount&&o.discount>0?o.discount+"%":"-"}`,`
  ${r.formatCurrency(r.calcItemTotal(o),l)}`]);}),t.push(f);let x={margin:[0,20,0,0],columns:[{width:"*",stack:[" "],style:"text"},{width:200,lineHeight:1.5,style:"normal",table:{widths:[80,"*"],headerRows:1,lineHeight:1.5,body:[[`
  ${this.config.string.subTotal}`,`
  ${r.formatCurrency(r.calcSubTotal(this.items),l)}`],[`

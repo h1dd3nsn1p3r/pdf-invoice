@@ -450,11 +450,7 @@ export class PDFInvoice {
 					`\n ${item.quantity}`,
 					`\n ${helper.formatCurrency(item.price, currOptions)}`,
 					`\n ${item.tax && item.tax > 0 ? item.tax + "%" : "-"}`,
-					`\n ${
-						item.discount && item.discount > 0
-							? helper.formatCurrency(item.discount, currOptions)
-							: "-"
-					}`,
+					`\n ${item.discount && item.discount > 0 ? item.discount + "%" : "-"}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
 						currOptions
