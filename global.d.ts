@@ -31,6 +31,7 @@ export interface InvoiceInfo {
 	currency?: string;
 	locale?: string;
 	orderDiscount?: number;
+	fee?: number;
 }
 
 export interface ItemInfo {
@@ -104,6 +105,7 @@ export interface Configuration {
 		subTotal?: string;
 		totalTax?: string;
 		totalDiscount?: string;
+		fee?: string;
 		grandTotal?: string;
 	};
 }

@@ -28,6 +28,7 @@ const payload = {
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
+		fee: 2,
 		orderDiscount: 3,
 	},
 	items: [
@@ -80,6 +81,7 @@ const config = {
 		subTotal: "Subtotal",
 		totalTax: "Total Tax",
 		totalDiscount: "Total Discount",
+		fee: "Fees",
 		grandTotal: "Grand Total",
 	},
 	style: {

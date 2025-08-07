@@ -514,6 +514,14 @@ export class PDFInvoice {
 								  ]
 								: []),
 
+							...(this.invoice.fee && this.invoice.fee > 0 ? [[
+								`\n ${this.config.string.fee}`,
+								`\n ${helper.formatCurrency(
+									this.invoice.fee,
+									currOptions
+								)}`,
+							]]: []),
+
 							[
 								{
 									text: `\n ${
@@ -525,7 +533,7 @@ export class PDFInvoice {
 								},
 								{
 									text: `\n ${helper.formatCurrency(
-										helper.calcFinalTotal(this.items, this.orderDiscount),
+										helper.calcFinalTotal(this.items, this.orderDiscount, this.invoice.fee),
 										currOptions
 									)}`,
 									fillColor: "#DDDDDD",

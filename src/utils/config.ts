@@ -21,6 +21,7 @@ const defaultConfig = {
 		subTotal: "Subtotal",
 		totalTax: "Total Tax",
 		totalDiscount: "Total Discount",
+		fee: "Total Fee",
 		grandTotal: "Grand Total",
 	},
 };
