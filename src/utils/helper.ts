@@ -5,7 +5,11 @@ interface Helpers {
 	calcItemTotalDiscount(item: ItemInfo[]): number | string;
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
-	calcFinalTotal(items: ItemInfo[], discount?: number, fee?: number): number | string;
+	calcFinalTotal(
+		items: ItemInfo[],
+		discount?: number,
+		fee?: number
+	): number | string;
 	formatCurrency(
 		amount: number | string,
 		args?: Record<string, string>
@@ -27,12 +31,12 @@ const helper: Helpers = {
 		let discountAmount = 0;
 		let taxAmount = 0;
 
-		if(item.discount){
-			discountAmount = subtotal *  (item.discount / 100);
+		if (item.discount) {
+			discountAmount = subtotal * (item.discount / 100);
 		}
 		const discountedSubtotal = subtotal - discountAmount;
 
-		if(item.tax){
+		if (item.tax) {
 			taxAmount = discountedSubtotal * (item.tax / 100);
 		}
 
@@ -126,18 +130,15 @@ const helper: Helpers = {
 			return 0;
 		}
 
-
 		const subTotal = Number(this.calcSubTotal(items));
-
-		const tax = Number(this.calcTax(items));
 
 		const parsedFee = Number(fee ?? 0);
 
 		if (!discount || isNaN(Number(discount))) {
-			return (subTotal + tax).toFixed(2);
+			return subTotal.toFixed(2);
 		}
 
-		return (subTotal + tax - (discount + parsedFee)).toFixed(2);
+		return (subTotal - (discount + parsedFee)).toFixed(2);
 	},
 
 	/**
