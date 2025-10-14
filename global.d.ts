@@ -30,6 +30,8 @@ export interface InvoiceInfo {
 	path: string;
 	currency?: string;
 	locale?: string;
+	orderDiscount?: number;
+	fee?: number;
 }
 
 export interface ItemInfo {
@@ -37,6 +39,7 @@ export interface ItemInfo {
 	quantity: number;
 	price: number;
 	tax?: number;
+	discount?: number;
 }
 
 export interface QRInfo {
@@ -96,9 +99,13 @@ export interface Configuration {
 		item?: string;
 		quantity?: string;
 		price?: string;
+		discount?: string;
 		tax?: string;
 		total?: string;
 		subTotal?: string;
 		totalTax?: string;
+		totalDiscount?: string;
+		fee?: string;
+		grandTotal?: string;
 	};
 }
