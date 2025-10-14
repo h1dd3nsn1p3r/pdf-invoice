@@ -15,10 +15,14 @@ const defaultConfig = {
 		item: "Item",
 		quantity: "Qty",
 		price: "Price",
+		discount: "Discount",
 		tax: "Tax",
 		total: "Total",
 		subTotal: "Subtotal",
 		totalTax: "Total Tax",
+		totalDiscount: "Total Discount",
+		fee: "Total Fee",
+		grandTotal: "Grand Total",
 	},
 };
 

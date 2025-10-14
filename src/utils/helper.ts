@@ -2,9 +2,14 @@ import type { ItemInfo } from "../../global";
 
 interface Helpers {
 	calcItemTotal(item: ItemInfo): number | string;
+	calcItemTotalDiscount(item: ItemInfo[]): number | string;
 	calcTax(items: ItemInfo[]): number | string;
 	calcSubTotal(items: ItemInfo[]): number | string;
-	calcFinalTotal(items: ItemInfo[]): number | string;
+	calcFinalTotal(
+		items: ItemInfo[],
+		discount?: number,
+		fee?: number
+	): number | string;
 	formatCurrency(
 		amount: number | string,
 		args?: Record<string, string>
@@ -15,25 +20,38 @@ const helper: Helpers = {
 	/**
 	 * Item total price calculation.
 	 *
-	 * @param {Object} item.
+	 * Displayed in the items table (not the invoice sub/grand total).
+	 *
+	 * @param {ItemInfo} item.
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
-	calcItemTotal: function (item: ItemInfo): string {
-		const price = item.price || 0;
-		const quantity = item.quantity || 1;
-		return (price * quantity).toFixed(2);
+	calcItemTotal: function (item: ItemInfo): number | string {
+		const subtotal = item.quantity * item.price;
+		let discountAmount = 0;
+		let taxAmount = 0;
+
+		if (item.discount) {
+			discountAmount = subtotal * (item.discount / 100);
+		}
+		const discountedSubtotal = subtotal - discountAmount;
+
+		if (item.tax) {
+			taxAmount = discountedSubtotal * (item.tax / 100);
+		}
+
+		return discountedSubtotal + taxAmount;
 	},
 
 	/**
 	 * Calculate subtotal.
 	 *
-	 * @param {Object} items.
+	 * @param {ItemInfo[]} items.
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
 	calcSubTotal: function (items: ItemInfo[]): number | string {
-		if (items.length === 0) {
+		if (!items || !items.length) {
 			return 0;
 		}
 
@@ -47,14 +65,40 @@ const helper: Helpers = {
 	},
 
 	/**
+	 * Item total discount calculation.
+	 *
+	 * Note: This method is not used currently in the invoice.
+	 *
+	 * @param {ItemInfo} item.
+	 * @returns {number} total.
+	 * @since 1.0.11
+	 */
+	calcItemTotalDiscount: function (item: ItemInfo[]): string {
+		if (!item || !item.length) {
+			return "0.00";
+		}
+
+		let total = 0;
+
+		item.forEach((i) => {
+			const price = i.price || 0;
+			const quantity = i.quantity || 1;
+			const discount = i.discount || 0;
+			total += (price * quantity * discount) / 100;
+		});
+
+		return total.toFixed(2);
+	},
+
+	/**
 	 * Calculate tax.
 	 *
-	 * @param {Object} items.
+	 * @param {ItemInfo[]} items.
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
 	calcTax: function (items: ItemInfo[]): number | string {
-		if (items.length === 0) {
+		if (!items || !items.length) {
 			return 0;
 		}
 
@@ -64,7 +108,6 @@ const helper: Helpers = {
 			const price = item.price;
 			const quantity = item.quantity;
 			const tax = item.tax || 0;
-
 			total += (price * quantity * tax) / 100;
 		});
 
@@ -74,19 +117,28 @@ const helper: Helpers = {
 	/**
 	 * Calculate total final price.
 	 *
-	 * @param {Object} items.
+	 * @param {ItemInfo[]} items.
 	 * @returns {number} total.
 	 * @since 1.0.0
 	 */
-	calcFinalTotal: function (items: ItemInfo[]): number | string {
-		if (items.length === 0) {
+	calcFinalTotal: function (
+		items: ItemInfo[],
+		discount?: number,
+		fee?: number
+	): number | string {
+		if (!items || !items.length) {
 			return 0;
 		}
 
 		const subTotal = Number(this.calcSubTotal(items));
-		const tax = Number(this.calcTax(items));
 
-		return (subTotal + tax).toFixed(2);
+		const parsedFee = Number(fee ?? 0);
+
+		if (!discount || isNaN(Number(discount))) {
+			return subTotal.toFixed(2);
+		}
+
+		return (subTotal - (discount + parsedFee)).toFixed(2);
 	},
 
 	/**

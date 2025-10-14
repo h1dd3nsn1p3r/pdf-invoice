@@ -69,26 +69,31 @@ const payload = {
 		status: "Paid!",
 		locale: "es-ES", // BCP 47 language tag. Default is "en-US".
 		currency: "EUR", // ISO 4217 currency code. Default is "USD".
-		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file. 
+		path: "./invoice.pdf", // Required. Path where you would like to generate the PDF file.
+		fee: 10, // Amount of fee to be added to the invoice (not percentage)
+		orderDiscount: 10, // Amount of order discount (not percentage)
 	},
 	items: [
 		{
 			name: "Cloud VPS Server - Starter Plan",
 			quantity: 1,
 			price: 400,
-			tax: 0, // Specify tax in percentage. Default is 0.
+			discount: 19, // Percentage of discount.
+			tax: 0, // Tax percentage. Default is 0.
 		},
 		{
 			name: "Domain Registration - example.com",
 			quantity: 1,
+			discount: 19, // Percentage of discount.
 			price: 20,
-			tax: 0, // Specify tax in percentage. Default is 0.
+			tax: 0, // Tax percentage. Default is 0.
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
+			discount: 0, // Percentage of discount.
 			price: 300,
-			tax: 0, // Specify tax in percentage. Default is 0.
+			tax: 0, // Tax percentage. Default is 0.
 		},
 	],
 	qr: {
@@ -148,6 +153,8 @@ const invoice = {
 	status: "Paid!", // Optional. Default is "Due pending!".
 	locale: "es-ES", // Optional. Default is "en-US".
 	currency: "EUR", // Optional. Default is "USD".
+	fee: 10, // Optional. Amount of fee to be added to the invoice (not percentage).
+	orderDiscount: 10, // Optional. Total order discount (not percentage).
 }
 ```
 
@@ -194,19 +201,22 @@ const items = [
 		name: "Cloud VPS Server - Starter Plan", // Required.
 		quantity: 1, // Required.
 		price: 400, // Required.
-		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+		tax: 0, // Optional. Tax percentage. Default is 0.
+		discount: 0, // Optional. Item discount percentage. Default is 0.
 	},
 	{
 		name: "Domain Registration - example.com", // Required.
 		quantity: 1, // Required.
 		price: 20, // Required.
-		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+		tax: 0, // Optional. Tax percentage. Default is 0.
+		discount: 0, // Optional. Item discount percentage. Default is 0.
 	},
 	{
 		name: "Maintenance Charge - Yearly", // Required.
 		quantity: 1, // Required.
-		price: 300, // Required.
-		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+		price: 300, // Required.	
+		tax: 0, // Optional. Tax percentage. Default is 0.
+		discount: 0, // Optional. Item discount percentage. Default is 0.
 	},
 ];
 ```
@@ -219,7 +229,8 @@ const items = [
 		name: "Cloud VPS Server - Starter Plan", // Required.
 		quantity: 1, // Required.
 		price: 400, // Required.
-		tax: 0, // Optional. Specify tax in percentage. Default is 0.
+		tax: 0, // Optional. Tax percentage. Default is 0.
+		discount: 0, // Optional. Item discount percentage. Default is 0.
 	},
 ];
 ```
@@ -253,9 +264,9 @@ Once you have the payload ready, you can generate the PDF using the following co
 const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 
 const handleInvoice = async(): Promise<void> => {
-    
+  
 	const payload = {
-			// Prepare payload.
+		// Prepare payload.
 	};
 
 	/**
@@ -286,25 +297,26 @@ const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
 const create = async(): Promise<void> => {
     
 	const payload = {
-			// ....
+		// ....
 	};
 
 	const config = {
 		// Custom labels.
 		string: {
-				invoice: "F A C T U A",
-				refNumber: "Referencia",
-				date: "Fecha",
-				dueDate: "Fecha de vencimiento",
-				status: "Estado",
-				billTo: "Facturar a",
-				item: "Artículo",
-				quantity: "Cantidad",
-				price: "Precio",
-				tax: "Impuesto",
-				total: "Total",
-				subTotal: "Subtotal",
-				totalTax: "Total Impuesto",
+			invoice: "F A C T U A",
+			refNumber: "Referencia",
+			date: "Fecha",
+			dueDate: "Fecha de vencimiento",
+			status: "Estado",
+			billTo: "Facturar a",
+			item: "Artículo",
+			quantity: "Cantidad",
+			price: "Precio",
+			tax: "Impuesto",
+			total: "Total",
+			subTotal: "Subtotal",
+			totalTax: "Total Impuesto",
+			grandTotal: "Grand Total", // Added in v1.0.11
 		},
 	};
 
@@ -355,7 +367,7 @@ const config = {
 		fontSize: 10, // Optional. Default is 10.
 		lineHeight: 1.8, // Optional. Default is 1.8.
 		color: "#000000", // Optional. Default is black.
-},
+	},
 };
 ```
 If you need additional information do check the [example](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts). In the example, I have used "Noto" and the `TTF` files of Noto font are included in the `fonts` directory. If you have non-latin characters, then you can use any custom font that supports the characters.

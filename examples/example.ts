@@ -28,6 +28,8 @@ const payload = {
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
+		fee: 2,
+		orderDiscount: 3,
 	},
 	items: [
 		{
@@ -35,18 +37,21 @@ const payload = {
 			quantity: 1,
 			price: 400,
 			tax: 13,
+			discount: 5,
 		},
 		{
 			name: "Domain Registration - example.com",
-			quantity: 1,
+			quantity: 2,
 			price: 20,
-			tax: 13.5,
+			tax: 0,
+			discount: 0,
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
 			price: 300,
 			tax: 0,
+			discount: 0,
 		},
 	],
 	qr: {
@@ -61,34 +66,38 @@ const payload = {
   -------------------------------------------------------------------------- */
 const config = {
 	string: {
-		invoice: "F A C T U A",
-		refNumber: "Referencia",
-		date: "Fecha",
-		dueDate: "Fecha de vencimiento",
-		status: "επί πληρωμή",
-		billTo: "Facturar a",
-		item: "Artículo",
-		quantity: "Cantidad",
-		price: "Precio",
-		tax: "Impuesto",
+		invoice: "I N V O I C E",
+		refNumber: "Ref no",
+		date: "Date",
+		dueDate: "Due Date",
+		status: "Status",
+		billTo: "Bill To",
+		item: "Item",
+		quantity: "Qty",
+		price: "Price",
+		discount: "Discount",
+		tax: "Tax",
 		total: "Total",
 		subTotal: "Subtotal",
-		totalTax: "Total Impuesto",
+		totalTax: "Total Tax",
+		totalDiscount: "Total Discount",
+		fee: "Fees",
+		grandTotal: "Grand Total",
 	},
 	style: {
-		font: "Noto", // "Helvetica", "Times", "Courier"
+		//font: "Noto", // "Helvetica", "Times", "Courier"
 		fontSize: 10,
 		lineHeight: 1.2,
 		color: "#000000",
 	},
-	font: {
-		Noto: {
-			normal: path.join(__dirname, "fonts/noto/regular.ttf"),
-			italics: path.join(__dirname, "fonts/noto/italic.ttf"),
-			bold: path.join(__dirname, "fonts/noto/bold.ttf"),
-			bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
-		},
-	},
+	//font: {
+	//	Noto: {
+	//		normal: path.join(__dirname, "fonts/noto/regular.ttf"),
+	//		italics: path.join(__dirname, "fonts/noto/italic.ttf"),
+	//		bold: path.join(__dirname, "fonts/noto/bold.ttf"),
+	//		bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
+	//	},
+	//},
 };
 
 /**

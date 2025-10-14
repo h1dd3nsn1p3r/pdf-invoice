@@ -27,6 +27,7 @@ export class PDFInvoice {
 	qr: QRInfo;
 	note: Notes;
 	date: string;
+	orderDiscount?: number;
 	config: Configuration;
 	constructor(payload: InvoicePayLoad, config: Configuration = defaultConfig) {
 		this.payload = payload;
@@ -65,6 +66,7 @@ export class PDFInvoice {
 		 * Configuration.
 		 */
 		this.config = config;
+		this.orderDiscount = payload.invoice.orderDiscount;
 	}
 
 	/**
@@ -420,7 +422,7 @@ export class PDFInvoice {
 			margin: [0, 30, 0, 0],
 			lineHeight: 1.5,
 			table: {
-				widths: [200, 50, "*", 50, "*"],
+				widths: [200, 30, "*", 50, 50, "*"],
 				headerRows: 1,
 				lineHeight: 1.5,
 				body: [
@@ -429,6 +431,7 @@ export class PDFInvoice {
 						`\n ${this.config.string.quantity}`,
 						`\n ${this.config.string.price}`,
 						`\n ${this.config.string.tax}`,
+						`\n ${this.config.string.discount}`,
 						`\n ${this.config.string.total}`,
 					],
 				] as any,
@@ -447,6 +450,7 @@ export class PDFInvoice {
 					`\n ${item.quantity}`,
 					`\n ${helper.formatCurrency(item.price, currOptions)}`,
 					`\n ${item.tax && item.tax > 0 ? item.tax + "%" : "-"}`,
+					`\n ${item.discount && item.discount > 0 ? item.discount + "%" : "-"}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
 						currOptions
@@ -493,12 +497,45 @@ export class PDFInvoice {
 									currOptions
 								)}`,
 							],
-							[
-								`\n ${this.config.string.total}`,
+
+							...(this.orderDiscount && this.orderDiscount > 0
+								? [
+										[
+											`\n ${this.config.string.totalDiscount}`,
+											`\n ${helper.formatCurrency(
+												this.orderDiscount,
+												currOptions
+											)}`,
+										],
+								  ]
+								: []),
+
+							...(this.invoice.fee && this.invoice.fee > 0 ? [[
+								`\n ${this.config.string.fee}`,
 								`\n ${helper.formatCurrency(
-									helper.calcFinalTotal(this.items),
+									this.invoice.fee,
 									currOptions
 								)}`,
+							]]: []),
+
+							[
+								{
+									text: `\n ${
+										this.config.string.grandTotal || this.config.string.total
+									}`,
+									fillColor: "#DDDDDD",
+									color: "#000000",
+									bold: true,
+								},
+								{
+									text: `\n ${helper.formatCurrency(
+										helper.calcFinalTotal(this.items, this.orderDiscount, this.invoice.fee),
+										currOptions
+									)}`,
+									fillColor: "#DDDDDD",
+									color: "#000000",
+									bold: true,
+								},
 							],
 						],
 					},
