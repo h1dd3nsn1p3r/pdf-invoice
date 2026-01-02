@@ -135,7 +135,7 @@ const helper: Helpers = {
 		const parsedFee = Number(fee ?? 0);
 
 		if (!discount || isNaN(Number(discount))) {
-			return subTotal.toFixed(2);
+			return (subTotal - parsedFee).toFixed(2);
 		}
 
 		return (subTotal - (discount + parsedFee)).toFixed(2);
