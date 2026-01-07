@@ -22,34 +22,34 @@ const payload = {
 	},
 	invoice: {
 		number: 1721,
-		date: "25/12/2023",
-		dueDate: "25/12/2023",
+		date: "01/07/2026",
+		dueDate: "01/07/2026",
 		status: "Paid!",
 		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
-		fee: 2,
-		orderDiscount: 3,
+		fee: 3.5,
+		orderDiscount: 5,
 	},
 	items: [
 		{
 			name: "Cloud VPS Server - Starter Plan",
 			quantity: 1,
-			price: 400,
+			price: 5,
 			tax: 13,
-			discount: 5,
+			discount: 0,
 		},
 		{
 			name: "Domain Registration - example.com",
-			quantity: 2,
-			price: 20,
+			quantity: 1,
+			price: 5,
 			tax: 0,
 			discount: 0,
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
-			price: 300,
+			price: 5,
 			tax: 0,
 			discount: 0,
 		},
