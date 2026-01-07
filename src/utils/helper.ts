@@ -130,15 +130,19 @@ const helper: Helpers = {
 			return 0;
 		}
 
-		const subTotal = Number(this.calcSubTotal(items));
+		let subTotal = Number(this.calcSubTotal(items));
 
 		const parsedFee = Number(fee ?? 0);
 
 		if (!discount || isNaN(Number(discount))) {
-			return subTotal.toFixed(2);
+			return (subTotal + parsedFee).toFixed(2);
 		}
 
-		return (subTotal - (discount + parsedFee)).toFixed(2);
+		subTotal = subTotal + parsedFee;
+
+		return subTotal - Number(discount) < 0
+			? "0.00"
+			: (subTotal - Number(discount)).toFixed(2);
 	},
 
 	/**
