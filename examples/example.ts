@@ -25,8 +25,8 @@ const payload = {
 		date: "01/07/2026",
 		dueDate: "01/07/2026",
 		status: "Paid!",
-		locale: "de-DE", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
-		currency: "EUR", // USD, GBP, JPY, INR, EUR, AUD
+		locale: "en-US", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
+		currency: "USD", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
 		fee: 3.5,
 		orderDiscount: 5,
@@ -34,7 +34,7 @@ const payload = {
 	items: [
 		{
 			name: "Cloud VPS Server - Starter Plan",
-			quantity: 1,
+			quantity: 2,
 			price: 5,
 			tax: 13,
 			discount: 0,
@@ -43,14 +43,14 @@ const payload = {
 			name: "Domain Registration - example.com",
 			quantity: 1,
 			price: 5,
-			tax: 0,
+			tax: 13,
 			discount: 0,
 		},
 		{
 			name: "Maintenance Charge - Yearly",
 			quantity: 1,
 			price: 5,
-			tax: 0,
+			tax: 13,
 			discount: 0,
 		},
 	],
@@ -79,25 +79,24 @@ const config = {
 		tax: "Tax",
 		total: "Total",
 		subTotal: "Subtotal",
-		totalTax: "Total Tax",
-		totalDiscount: "Total Discount",
-		fee: "Fees",
-		grandTotal: "Grand Total",
+		totalDiscount: "Order Discount",
+		fee: "Fee",
+		grandTotal: "Final Total",
+	},
+	font: {
+		Noto: {
+			normal: path.join(__dirname, "fonts/noto/regular.ttf"),
+			italics: path.join(__dirname, "fonts/noto/italic.ttf"),
+			bold: path.join(__dirname, "fonts/noto/bold.ttf"),
+			bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
+		},
 	},
 	style: {
-		//font: "Noto", // "Helvetica", "Times", "Courier"
-		fontSize: 10,
-		lineHeight: 1.2,
+		font: "Helvetica", // "Helvetica", "Times", "Courier", "Noto"
+		fontSize: 9,
+		lineHeight: 1.6,
 		color: "#000000",
 	},
-	//font: {
-	//	Noto: {
-	//		normal: path.join(__dirname, "fonts/noto/regular.ttf"),
-	//		italics: path.join(__dirname, "fonts/noto/italic.ttf"),
-	//		bold: path.join(__dirname, "fonts/noto/bold.ttf"),
-	//		bolditalics: path.join(__dirname, "fonts/noto/bold-italic.ttf"),
-	//	},
-	//},
 };
 
 /**
