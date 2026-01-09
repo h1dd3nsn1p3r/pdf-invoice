@@ -313,7 +313,6 @@ const create = async (): Promise<void> => {
 			tax: "Impuesto",
 			total: "Total",
 			subTotal: "Subtotal",
-			totalTax: "Total Impuesto",
 			grandTotal: "Grand Total", // Added in v1.0.11
 		},
 	};
@@ -395,4 +394,4 @@ Refer to [releases](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases) sectio
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome, but please open an issue to discuss before making any changes.
