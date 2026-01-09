@@ -103,7 +103,6 @@ export interface Configuration {
 		tax?: string;
 		total?: string;
 		subTotal?: string;
-		totalTax?: string;
 		totalDiscount?: string;
 		fee?: string;
 		grandTotal?: string;
