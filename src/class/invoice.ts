@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const invoiceMaker = require("pdfmake");
+const pdfmake = require("pdfmake");
 const helper = require("@/utils/helper");
 const defaultConfig = require("@/utils/config");
 
@@ -76,7 +76,7 @@ export class PDFInvoice {
 	 * @since 1.0.0
 	 */
 	async create(): Promise<string> {
-		const printer = new invoiceMaker(this.fonts());
+		pdfmake.addFonts(this.fonts());
 
 		const docDefinition = {
 			pageSize: "A4",
@@ -88,17 +88,10 @@ export class PDFInvoice {
 			styles: this.docTypo(),
 		};
 
-		return new Promise((resolve, reject) => {
-			const doc = printer.createPdfKitDocument(docDefinition);
-			const stream = fs.createWriteStream(this.path);
+		const pdf = pdfmake.createPdf(docDefinition);
 
-			doc.pipe(stream);
-
-			doc.on("end", () => resolve(this.path));
-
-			doc.on("error", (err: any) => reject(err));
-
-			doc.end();
+		return pdf.write(this.path).then(() => {
+			return this.path;
 		});
 	}
 
@@ -450,7 +443,9 @@ export class PDFInvoice {
 					`\n ${item.quantity}`,
 					`\n ${helper.formatCurrency(item.price, currOptions)}`,
 					`\n ${item.tax && item.tax > 0 ? item.tax + "%" : "-"}`,
-					`\n ${item.discount && item.discount > 0 ? item.discount + "%" : "-"}`,
+					`\n ${
+						item.discount && item.discount > 0 ? item.discount + "%" : "-"
+					}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
 						currOptions
@@ -459,91 +454,103 @@ export class PDFInvoice {
 			});
 		}
 
+		// Subtotal
+		sectionItems.table.body.push([
+			{ text: "", colSpan: 3, border: [false, false, false, false] },
+			{},
+			{},
+			{
+				text: `\n ${this.config.string.subTotal}`,
+				colSpan: 2,
+				fillColor: "#F1F1F1",
+			},
+			{},
+			{
+				text:
+					`\n ${helper.formatCurrency(
+						helper.calcSubTotal(this.items),
+						currOptions
+					)}` +
+					(helper.calcTax(this.items) > 0
+						? ` (inc. ${helper.formatCurrency(
+								helper.calcTax(this.items),
+								currOptions
+						  )} tax)`
+						: ""),
+				fillColor: "#F1F1F1",
+			},
+		]);
+
+		// Fee
+		if (this.invoice.fee && this.invoice.fee > 0) {
+			sectionItems.table.body.push([
+				{ text: "", colSpan: 3, border: [false, false, false, false] },
+				{},
+				{},
+				{
+					text: `\n ${this.config.string.fee}`,
+					colSpan: 2,
+					fillColor: "#F1F1F1",
+				},
+				{},
+				{
+					text: `\n + ${helper.formatCurrency(this.invoice.fee, currOptions)}`,
+					fillColor: "#F1F1F1",
+				},
+			]);
+		}
+
+		// Additional order discount
+		if (this.orderDiscount && this.orderDiscount > 0) {
+			sectionItems.table.body.push([
+				{ text: "", colSpan: 3, border: [false, false, false, false] },
+				{},
+				{},
+				{
+					text: `\n ${this.config.string.totalDiscount}`,
+					colSpan: 2,
+					fillColor: "#F1F1F1",
+				},
+				{},
+				{
+					text: `\n - ${helper.formatCurrency(
+						this.orderDiscount,
+						currOptions
+					)}`,
+					fillColor: "#F1F1F1",
+				},
+			]);
+		}
+
+		// Grand Total
+		sectionItems.table.body.push([
+			{ text: "", colSpan: 3, border: [false, false, false, false] },
+			{},
+			{},
+			{
+				text: `\n ${this.config.string.grandTotal || this.config.string.total}`,
+				colSpan: 2,
+				fillColor: "#F1F1F1",
+				color: "#000000",
+				bold: true,
+			},
+			{},
+			{
+				text: `\n ${helper.formatCurrency(
+					helper.calcFinalTotal(
+						this.items,
+						this.orderDiscount,
+						this.invoice.fee
+					),
+					currOptions
+				)}`,
+				fillColor: "#F1F1F1",
+				color: "#000000",
+				bold: true,
+			},
+		]);
+
 		sections.push(sectionItems);
-
-		/**
-		 * Right: Total section.
-		 *
-		 * @since 1.0.0
-		 */
-		const sectionTotal = {
-			margin: [0, 20, 0, 0],
-			columns: [
-				{
-					width: "*",
-					stack: [" "],
-					style: "text",
-				},
-				{
-					width: 200,
-					lineHeight: 1.5,
-					style: "normal",
-					table: {
-						widths: [80, "*"],
-						headerRows: 1,
-						lineHeight: 1.5,
-						body: [
-							[
-								`\n ${this.config.string.subTotal}`,
-								`\n ${helper.formatCurrency(
-									helper.calcSubTotal(this.items),
-									currOptions
-								)}`,
-							],
-							[
-								`\n ${this.config.string.totalTax}`,
-								`\n ${helper.formatCurrency(
-									helper.calcTax(this.items),
-									currOptions
-								)}`,
-							],
-
-							...(this.orderDiscount && this.orderDiscount > 0
-								? [
-										[
-											`\n ${this.config.string.totalDiscount}`,
-											`\n ${helper.formatCurrency(
-												this.orderDiscount,
-												currOptions
-											)}`,
-										],
-								  ]
-								: []),
-
-							...(this.invoice.fee && this.invoice.fee > 0 ? [[
-								`\n ${this.config.string.fee}`,
-								`\n ${helper.formatCurrency(
-									this.invoice.fee,
-									currOptions
-								)}`,
-							]]: []),
-
-							[
-								{
-									text: `\n ${
-										this.config.string.grandTotal || this.config.string.total
-									}`,
-									fillColor: "#DDDDDD",
-									color: "#000000",
-									bold: true,
-								},
-								{
-									text: `\n ${helper.formatCurrency(
-										helper.calcFinalTotal(this.items, this.orderDiscount, this.invoice.fee),
-										currOptions
-									)}`,
-									fillColor: "#DDDDDD",
-									color: "#000000",
-									bold: true,
-								},
-							],
-						],
-					},
-				},
-			],
-		};
-
-		sections.push(sectionTotal);
 
 		/**
 		 * Left: QR section.

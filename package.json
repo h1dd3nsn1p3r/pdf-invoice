@@ -28,13 +28,12 @@
 	],
 	"devDependencies": {
 		"@types/node": "^20.10.5",
-		"@types/pdfmake": "^0.2.8",
 		"ts-node": "^10.9.2",
 		"tsup": "^8.0.1",
 		"typescript": "^5.3.3"
 	},
 	"dependencies": {
-		"pdfmake": "^0.2.8"
+		"pdfmake": "^0.3.1"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

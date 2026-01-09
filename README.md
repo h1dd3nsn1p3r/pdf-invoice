@@ -1,6 +1,6 @@
 ![PDF Invoice](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/hero.png)
 
-📑 Simple yet powerful JavaScript library that generates PDF invoice, estimates & payment receipts from a JSON data. It can be used in any Node JS/Bun JS environment. 
+📑 Simple yet powerful JavaScript library that generates PDF invoice, estimates & payment receipts from a JSON data. It can be used in any Node JS/Bun JS environment.
 
 ## Installation
 
@@ -27,16 +27,16 @@ pnpm add @h1dd3nsn1p3r/pdf-invoice
 Once installed, you can import either using `require` or `import`:
 
 ```js
-const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
+const { PDFInvoice } = require("@h1dd3nsn1p3r/pdf-invoice");
 ```
 
 or ES6 import:
 
 ```js
-import { PDFInvoice } from '@h1dd3nsn1p3r/pdf-invoice';
+import { PDFInvoice } from "@h1dd3nsn1p3r/pdf-invoice";
 ```
 
-`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/stable/examples/example.ts) example. 
+`PDFInvoice` is a class that takes the payload as an argument. The payload is the data that you want to show on the invoice. For more information check the [Payload data](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/stable/examples/example.ts) example.
 
 ## Payload Data
 
@@ -103,7 +103,7 @@ const payload = {
 	note: {
 		text: "Thank you for your business.",
 		italic: false, // Default is true.
-	}
+	},
 };
 ```
 
@@ -115,7 +115,7 @@ const payload = {
 		name: "Festrol Corp.",
 		address: "1711 W. El Segundo Blvd, Hawthorne, \n Canada - 90250",
 		phone: "Tel: (+11) 245 543 903",
-		email: "Mail: email@yourcompany.com"
+		email: "Mail: email@yourcompany.com",
 	},
 };
 ```
@@ -155,7 +155,7 @@ const invoice = {
 	currency: "EUR", // Optional. Default is "USD".
 	fee: 10, // Optional. Amount of fee to be added to the invoice (not percentage).
 	orderDiscount: 10, // Optional. Total order discount (not percentage).
-}
+};
 ```
 
 The invoice number is required. It might be a `int` that you use to track your invoices. In most cases, it is a unique number that reference the `order ID` or invoice sequence number in your database. Rest of the fields are optional.
@@ -166,13 +166,13 @@ If `path` is supplied in the payload, then the PDF will be generated at that loc
 
 ```js
 const file = "invoice" + "-#" + 1729 + "-" + new Date().getTime(); // invoice-#1729-1630480000000
-const location = path.join(__dirname, "/invoices/" + file + ".pdf"); 
+const location = path.join(__dirname, "/invoices/" + file + ".pdf");
 const invoice = {
-  path: location, // Required.
-}
+	path: location, // Required.
+};
 ```
 
-If path is not supplied in the payload, then the PDF will be generated in current working directory with the name `invoice.pdf`. 
+If path is not supplied in the payload, then the PDF will be generated in current working directory with the name `invoice.pdf`.
 
 ### Customer
 
@@ -186,7 +186,7 @@ const customer = {
 	phone: "Tel: (555) 555-5555", // Optional.
 	email: "joedeo@example.com", // Optional.
 	taxId: "Tax ID: 1234567890", // Optional.
-}
+};
 ```
 
 The name of the customer is required. Rest of the fields are optional.
@@ -214,7 +214,7 @@ const items = [
 	{
 		name: "Maintenance Charge - Yearly", // Required.
 		quantity: 1, // Required.
-		price: 300, // Required.	
+		price: 300, // Required.
 		tax: 0, // Optional. Tax percentage. Default is 0.
 		discount: 0, // Optional. Item discount percentage. Default is 0.
 	},
@@ -242,8 +242,8 @@ If you want to add a QR code to the invoice, then you can use this field. It is 
 ```js
 const qr = {
 	data: "https://www.festrolcorp.io/", // Required. The data that you want to encode in the QR code.
-	width: "100", // Optional. Default is 50. 
-}
+	width: "100", // Optional. Default is 50.
+};
 ```
 
 The `data` field is required. It is the data that you want to encode in the QR code. The `width` field is optional. It is the width of the QR code in pixels. Default is `50`. The recommended width of QR is 30 - 100.
@@ -253,7 +253,7 @@ The `data` field is required. It is the data that you want to encode in the QR c
 Use this field if you want to add a note to the invoice. It is an string with the following structure:
 
 ```js
-const note = "Thank you for your business."; 
+const note = "Thank you for your business.";
 ```
 
 ## Generate PDF
@@ -261,22 +261,21 @@ const note = "Thank you for your business.";
 Once you have the payload ready, you can generate the PDF using the following code:
 
 ```js
-const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
+const { PDFInvoice } = require("@h1dd3nsn1p3r/pdf-invoice");
 
-const handleInvoice = async(): Promise<void> => {
-  
+const handleInvoice = async (): Promise<void> => {
 	const payload = {
 		// Prepare payload.
 	};
 
 	/**
-	* Create the invoice.
-	*/
+	 * Create the invoice.
+	 */
 	const invoice = new PDFInvoice(payload);
 	const pdf = await invoice.create(); // Returns promise, await it.
 
 	console.log(pdf); // Full path to the PDF file.
-}
+};
 
 handleInvoice();
 ```
@@ -292,10 +291,9 @@ If required you can change the configuration of the invoice. It is an object wit
 All the text strings that are used in the invoice can be customized. For example:
 
 ```js
-const { PDFInvoice } = require('@h1dd3nsn1p3r/pdf-invoice');
+const { PDFInvoice } = require("@h1dd3nsn1p3r/pdf-invoice");
 
-const create = async(): Promise<void> => {
-    
+const create = async (): Promise<void> => {
 	const payload = {
 		// ....
 	};
@@ -325,7 +323,7 @@ const create = async(): Promise<void> => {
 	const pdf = await invoice.create();
 
 	console.log(pdf);
-}
+};
 ```
 
 ### Fonts
@@ -333,7 +331,7 @@ const create = async(): Promise<void> => {
 Following are the fonts that are available build-in with the library:
 
 - Helvetica
-- Times 
+- Times
 - Courier
 
 All these three fonts includes regular, bold, italic and bold-italic styles. You can use them in the configuration object. For example:
@@ -349,6 +347,7 @@ const config = {
 	},
 };
 ```
+
 Any font can be used with the `font` option by passing the fonts `TTF` files path. For example:
 
 ```js
@@ -370,6 +369,7 @@ const config = {
 	},
 };
 ```
+
 If you need additional information do check the [example](https://github.com/h1dd3nsn1p3r/pdf-invoice/blob/development/examples/example.ts). In the example, I have used "Noto" and the `TTF` files of Noto font are included in the `fonts` directory. If you have non-latin characters, then you can use any custom font that supports the characters.
 
 ## Types
@@ -379,10 +379,17 @@ This library is written in TypeScript. If you need to import the types, then you
 Example:
 
 ```js
-import type { CompanyInfo, CustomerInfo, InvoiceInfo, ItemInfo, QRInfo, InvoicePayLoad } from '@h1dd3nsn1p3r/pdf-invoice/global.d.ts';
+import type {
+	CompanyInfo,
+	CustomerInfo,
+	InvoiceInfo,
+	ItemInfo,
+	QRInfo,
+	InvoicePayLoad,
+} from "@h1dd3nsn1p3r/pdf-invoice/global.d.ts";
 ```
 
-## Changelog: 
+## Changelog:
 
 Refer to [releases](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases) section for more information.
 
