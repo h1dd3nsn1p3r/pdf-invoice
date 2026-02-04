@@ -448,7 +448,7 @@ export class PDFInvoice {
 					}`,
 					`\n ${helper.formatCurrency(
 						helper.calcItemTotal(item),
-						currOptions
+						currOptions,
 					)}`,
 				]);
 			});
@@ -469,35 +469,44 @@ export class PDFInvoice {
 				text:
 					`\n ${helper.formatCurrency(
 						helper.calcSubTotal(this.items),
-						currOptions
+						currOptions,
 					)}` +
 					(helper.calcTax(this.items) > 0
 						? ` (inc. ${helper.formatCurrency(
 								helper.calcTax(this.items),
-								currOptions
-						  )} tax)`
+								currOptions,
+							)} tax)`
 						: ""),
 				fillColor: "#F1F1F1",
 			},
 		]);
 
-		// Fee
-		if (this.invoice.fee && this.invoice.fee > 0) {
-			sectionItems.table.body.push([
-				{ text: "", colSpan: 3, border: [false, false, false, false] },
-				{},
-				{},
-				{
-					text: `\n ${this.config.string.fee}`,
-					colSpan: 2,
-					fillColor: "#F1F1F1",
-				},
-				{},
-				{
-					text: `\n + ${helper.formatCurrency(this.invoice.fee, currOptions)}`,
-					fillColor: "#F1F1F1",
-				},
-			]);
+		// Fees
+		if (this.invoice.fees && this.invoice.fees.length > 0) {
+			this.invoice.fees.forEach((item) => {
+				sectionItems.table.body.push([
+					{
+						text: "",
+						colSpan: 3,
+						border: [false, false, false, false],
+					} as any,
+					{},
+					{},
+					{
+						text: `\n ${item.label}`,
+						colSpan: 2,
+						fillColor: "#F1F1F1",
+					},
+					{},
+					{
+						text: `\n ${item.operation} ${helper.formatCurrency(
+							item.amount,
+							currOptions,
+						)}`,
+						fillColor: "#F1F1F1",
+					},
+				]);
+			});
 		}
 
 		// Additional order discount
@@ -515,7 +524,7 @@ export class PDFInvoice {
 				{
 					text: `\n - ${helper.formatCurrency(
 						this.orderDiscount,
-						currOptions
+						currOptions,
 					)}`,
 					fillColor: "#F1F1F1",
 				},
@@ -540,9 +549,9 @@ export class PDFInvoice {
 					helper.calcFinalTotal(
 						this.items,
 						this.orderDiscount,
-						this.invoice.fee
+						this.invoice.fees,
 					),
-					currOptions
+					currOptions,
 				)}`,
 				fillColor: "#F1F1F1",
 				color: "#000000",

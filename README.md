@@ -153,7 +153,18 @@ const invoice = {
 	status: "Paid!", // Optional. Default is "Due pending!".
 	locale: "es-ES", // Optional. Default is "en-US".
 	currency: "EUR", // Optional. Default is "USD".
-	fee: 10, // Optional. Amount of fee to be added to the invoice (not percentage).
+	fees: [
+		{
+			label: "Delivery Charge",
+			amount: 10, // Number (not percentage)
+			operation: "+",
+		},
+		{
+			label: "Payment Processing",
+			amount: 3.2, // Number (not percentage)
+			operation: "-",
+		},
+	], // Customer and business fees (Optional)
 	orderDiscount: 10, // Optional. Total order discount (not percentage).
 };
 ```
@@ -234,6 +245,12 @@ const items = [
 	},
 ];
 ```
+
+### Fees
+
+The fee option was initially introduced in version [1.0.12](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases/tag/v1.0.12) and was revised in version [1.0.15](https://github.com/h1dd3nsn1p3r/pdf-invoice/releases/tag/v1.0.15). Check this [discussion #53](https://github.com/h1dd3nsn1p3r/pdf-invoice/issues/53) for more information.
+
+Fees are optional and are applied to the sub total amount of the invoice. The `operation` field can be either `+` or `-`, depending on whether you want to add or subtract the fee from the sub-total amount. The `amount` field specifies the fee amount. The `label` field defines the fee label, which will be displayed on the invoice just below the sub total amount.
 
 ### QR Code
 

@@ -21,6 +21,12 @@ export interface CustomerInfo {
 	taxId?: string;
 }
 
+export interface Fee {
+	label: string;
+	amount: number;
+	operation: "+" | "-";
+}
+
 export interface InvoiceInfo {
 	label?: string;
 	number: string | number;
@@ -31,7 +37,7 @@ export interface InvoiceInfo {
 	currency?: string;
 	locale?: string;
 	orderDiscount?: number;
-	fee?: number;
+	fees?: Fee[];
 }
 
 export interface ItemInfo {

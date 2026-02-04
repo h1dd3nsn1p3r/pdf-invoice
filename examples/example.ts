@@ -28,7 +28,18 @@ const payload = {
 		locale: "en-US", // en-US, fr-FR, es-ES, de-DE, it-IT, pt-PT
 		currency: "USD", // USD, GBP, JPY, INR, EUR, AUD
 		path: path.join(__dirname, "invoice.pdf"),
-		fee: 3.5,
+		fees: [
+			{
+				label: "Delivery Charge",
+				amount: 10, // Number (not percentage)
+				operation: "+",
+			},
+			{
+				label: "Payment Processing",
+				amount: 3.2, // Number (not percentage)
+				operation: "-",
+			},
+		],
 		orderDiscount: 5,
 	},
 	items: [
