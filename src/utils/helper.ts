@@ -1,4 +1,4 @@
-import type { ItemInfo } from "../../global";
+import type { ItemInfo, Fee } from "../../global";
 
 interface Helpers {
 	calcItemTotal(item: ItemInfo): number | string;
@@ -8,11 +8,11 @@ interface Helpers {
 	calcFinalTotal(
 		items: ItemInfo[],
 		discount?: number,
-		fee?: number
+		fees?: Fee[],
 	): number | string;
 	formatCurrency(
 		amount: number | string,
-		args?: Record<string, string>
+		args?: Record<string, string>,
 	): string;
 }
 
@@ -124,7 +124,7 @@ const helper: Helpers = {
 	calcFinalTotal: function (
 		items: ItemInfo[],
 		discount?: number,
-		fee?: number
+		fees?: Fee[],
 	): number | string {
 		if (!items || !items.length) {
 			return 0;
@@ -132,7 +132,17 @@ const helper: Helpers = {
 
 		let subTotal = Number(this.calcSubTotal(items));
 
-		const parsedFee = Number(fee ?? 0);
+		let parsedFee = 0;
+
+		if (fees) {
+			fees.forEach((f) => {
+				if (f.operation === "+") {
+					parsedFee += f.amount;
+				} else {
+					parsedFee -= f.amount;
+				}
+			});
+		}
 
 		if (!discount || isNaN(Number(discount))) {
 			return (subTotal + parsedFee).toFixed(2);
@@ -157,7 +167,7 @@ const helper: Helpers = {
 	 */
 	formatCurrency: function (
 		amount: number | string,
-		args: Record<string, string> = { locale: "en-US", currency: "USD" }
+		args: Record<string, string> = { locale: "en-US", currency: "USD" },
 	): string {
 		amount = Number(amount);
 
